@@ -1,0 +1,44 @@
+{
+    "dbConstrunet": {
+        "ct": "bk3nQmAS7a1XFeo0DKq7dVgDPVPUrUkp5P7tKUYxYh7ftaPCcjDbrv7MPkoSm9tumvVoMifEe70ZgXbI9gpFwumlDoNA8\/JasCEv\/mP6s5B+DABZ7h2hYMpf+Qxp28yO0z\/8v3JkoEV7GnTrGkzYsLH4mBpNVtNoZM300cQUCJ0=",
+        "iv": "e339dca1996ec02a15038e1d816322e1",
+        "s": "0dd7aaa27d4ca56c"
+    },
+    "MAIL": {
+        "ip": "owa.coppel.com",
+        "usuario": "notificacionesdiseno@int.coppel.com",
+        "contrasena": "Yz97=@w0YI=R",
+        "puerto": 587,
+        "correo": "notificacionesdiseno@int.coppel.com"
+    },
+    "MAIL_back": {
+        "ip": "owa.coppel.com",
+        "usuario": "construnet@int.coppel.com",
+        "contrasena": "89feisZ!_#1x",
+        "puerto": 587,
+        "correo": "construnet@int.coppel.com"
+    },
+    "Alfresco": {
+        "ct": "YzEVOfOAynEUGtR3HzHIP5HLVcYzRr\/PtEZBIrYcjTSdBMBDn5i2xTEQs45SnMY+EdekW\/QGITitlGr9FjhOx9m7Wpr\/G8dlxXrekm9Ihf03kM118vw8celvJAsgKp2BnKidwVaXhXVl9g5Jt\/Ujlqe4Iw9zV\/ASf+BI41vRREv6SeSZlF01YYPOkBCYXpvPu3B1gnidTaDmf7YZQrBLRRIFV7BUrdTtUyiHhIpzjPw=",
+        "iv": "e5438b4276f3daeed725a964176d5b5a",
+        "s": "c0dd8e1eabe17113"
+    },
+    "log": {
+        "Dev": {
+            "authenticate": "https://authentication-dev.coppel.io:8443/api/sso/v1/app/authenticate",
+            "appId": "ebb98c01-f223-410b-a2e5-1bbfa8a15146",
+            "appKey": "b394fc74893df0baaef9591a0c782a33cb78b6a986630a5cc1c64190190b5ecb"
+        },
+        "Prod": {
+            "authenticate": "https://app.coppel.cloud/api/sso/v1/app/authenticate",
+            "appId": "ebb98c01-f223-410b-a2e5-1bbfa8a15146",
+            "appKey": "b394fc74893df0baaef9591a0c782a33cb78b6a986630a5cc1c64190190b5ecb"
+        },
+        "apiLog": "https://apilogs.coppel.io/api/v1/bitacora"
+    },
+    "environment": "Test",
+    "uriException": [],
+    "auth": "https://sso.coppel.io:50061/api/v1/verify",
+    "authDev": "https://sso-test.coppel.io:50061/api/v1/verify",
+    "soaAH": "http://pbatelefonicas.coppel.com:20622/soa/autentificaHuella/autentificaHuella?wsdl"
+}

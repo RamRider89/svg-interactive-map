@@ -1,0 +1,23 @@
+{
+    "name": "coppel/campusdigitalrac",
+    "version": "1.0.0",
+    "description": "Mapa Campus Digital",
+    "type": "library",
+    "license": "Propietary",
+    "authors": [
+        {
+            "name": "David Duarte",
+            "email": "david.duarte@coppel.com"
+        }
+    ],
+    "require": {
+        "oc/rac": "^2.1.0",
+        "katzgrau/klogger": "^1.2.1"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://gitlab.coppel.io/oc/rac.git/"
+        }
+    ]
+}

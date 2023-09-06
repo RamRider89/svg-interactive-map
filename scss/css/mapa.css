@@ -1,0 +1,295 @@
+html, body {
+  background: #ffffff;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ID LAYERS */
+#layer-pasillos{}
+#layer-utils {}
+#layer-salidas {}
+#layer-oficinas {}
+#layer-salas {}
+#layer-herraduras-a {}
+#layer-herraduras-b {}
+#layer-herraduras-c {}
+#layer-herraduras-d {}
+#layer-herraduras-e {}
+#layer-herraduras-f {}
+#layer-herraduras-g {}
+#layer-herraduras-h {}
+#layer-herraduras-i {}
+#layer-herraduras-j {}
+#layer-herraduras-k {}
+#layer-herraduras-l {}
+#layer-herraduras-m {}
+#layer-herraduras-n {}
+
+/**
+*
+*  ESTILOS DE LAYERS EN EL MAPA
+*/
+
+    tspan{
+        z-index: 10;
+    }
+    text{
+        z-index: 11;
+    }
+
+    .pasillos{
+        
+    }
+
+    .posicion{
+        z-index: 100;
+    }
+
+    .herradura {
+       cursor: pointer;
+       display: inline;
+       fill: #ffffff
+   }
+
+   .oficina {
+       stroke-width: 2.18252;
+       stroke-opacity: 1;
+       stroke-linejoin: round;
+       stroke-linecap: round;
+       stroke-dasharray: none;
+       stroke: #000000;
+       fill: none;
+   }
+
+   .asiento {
+       display: inline;
+       fill: #d3d3d3;
+       fill-opacity: 1;
+       stroke: #000000;
+       stroke-width: 2;
+   }
+
+   .respaldo {
+       display: inline;
+       fill: #8e8e8e;
+       fill-opacity: 1;
+       stroke: #000000;
+       stroke-width: 2;
+   }
+
+          .asientoOcupado {
+              display: inline;
+              fill: #d1e0fc;
+              fill-opacity: 1;
+              stroke: #000000;
+              stroke-width: 2;
+          }
+    
+          .respaldoOcupado {
+              display: inline;
+              fill: #9492f5;
+              fill-opacity: 1;
+              stroke: #000000;
+              stroke-width: 2;
+          }
+
+   .muros {
+       display: inline;
+       fill: #ffffff;
+       stroke: #282828;
+       stroke-width: 7.55906;
+       stroke-linecap: butt;
+       stroke-linejoin: round;
+       stroke-dasharray: none;
+       stroke-opacity: 1;
+       paint-order: fill markers stroke;
+   }
+
+   .muros-wc {
+       display: inline;
+       fill: none;
+       stroke: #000000;
+       stroke-width: 2;
+       stroke-dasharray: none;
+       stroke-opacity: 1
+   }
+
+   .muros-utils {
+       display: inline;
+       fill: none;
+       stroke: #000000;
+       stroke-width: 2;
+       stroke-dasharray: none;
+       stroke-opacity: 1
+   }
+
+   .muros-salas {
+       display: inline;
+       fill: none;
+       stroke: #000000;
+       stroke-width: 2;
+       stroke-dasharray: none;
+       stroke-opacity: 1;
+   }
+
+   .etiquetaH {
+       font-size: 12px;
+       white-space: pre;
+       stroke-width: 3;
+       fill: #ff55dd;
+       color: #ff55dd;
+   }
+
+   .etiqueta-utils {
+       font-size: 34px;
+       white-space: pre;
+       stroke-width: 3;
+       fill: #5599FF;
+   }
+
+   .etiqueta-salas{
+
+   }
+
+   .etiqueta-wc {
+       font-size: 12px;
+       white-space: pre;
+       stroke-width: 3;
+       fill: #44AA00;
+   }
+
+   .span-etiqueta-H {
+       font-size: 10px;
+       fill: #ff55dd;
+       color: #ff55dd;
+   }
+
+   /* hover */
+   .muros:hover {
+       /*fill: rgb(221, 236, 255);*/
+       fill: var(--light);
+   }
+
+   .posicion:hover .asiento,
+   .posicion:hover .respaldo {
+       /*fill: rgb(194, 236, 227);*/
+       fill: var(--primary);
+       transition: fill 0.4s;
+   }
+
+   .mesas-cafeteria {
+       fill: #8e8e8e;
+       fill-opacity: 1;
+       stroke: #8e8e8e;
+       stroke-opacity: 1;
+       stroke-width: 1;
+   }
+
+   .sillas-cafeteria {
+       display: inline;
+       stroke-width: 2;
+       stroke: #d3d3d3;
+       fill-opacity: 1;
+       fill: #d3d3d3;
+   }
+
+
+   /* OTROS */
+
+
+#zoom {
+    width: 100%;
+    height: 100%;
+    transform-origin: 0px 0px;
+    transform: scale(1) translate(0px, 0px);
+    cursor: grab;
+}
+
+div#zoom>img {
+    width: 100%;
+    height: auto;
+}
+
+
+#imageContainer {
+    width: 100%;
+    height: 100%;
+    min-width: 800px;
+    min-height: 600px;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+
+.imageContainer>img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    touch-action: none;
+}
+
+#hud {
+    color: inherit;
+    font-size: 9px;
+    pointer-events: none;
+    width: 90%;
+    overflow: hidden;
+    height: auto;
+    padding: 4px;
+    text-align: left;
+}
+
+#hud_ {
+    background: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    padding: 10px 20px;
+    color: #FFF;
+    font-family: sans-serif;
+    font-size: 1.2em;
+    pointer-events: none;
+}
+
+
+
+
+.controls {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 12px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.controls-button {
+    font-weight: 700;
+    margin-top: 12px;
+}
+
+.info {
+    user-select: none;
+    pointer-events: none;
+
+    ul {
+        font-size: 13px;
+        list-style-type: none;
+        padding: 0;
+        line-height: 20px;
+        margin-top: 0;
+    }
+}

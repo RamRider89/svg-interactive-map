@@ -1,0 +1,34 @@
+{
+    "herraduras":
+    [
+        {"tittle": "Herraduras A", "id": "layer-herraduras-a"},
+        {"tittle": "Herraduras B", "id": "layer-herraduras-b"},
+        {"tittle": "Herraduras C", "id": "layer-herraduras-c"},
+        {"tittle": "Herraduras D", "id": "layer-herraduras-d"},
+        {"tittle": "Herraduras E", "id": "layer-herraduras-e"},
+        {"tittle": "Herraduras F", "id": "layer-herraduras-f"},
+        {"tittle": "Herraduras G", "id": "layer-herraduras-g"},
+        {"tittle": "Herraduras H", "id": "layer-herraduras-h"},
+        {"tittle": "Herraduras I", "id": "layer-herraduras-i"},
+        {"tittle": "Herraduras J", "id": "layer-herraduras-j"},
+        {"tittle": "Herraduras K", "id": "layer-herraduras-k"},
+        {"tittle": "Herraduras L", "id": "layer-herraduras-l"},
+        {"tittle": "Herraduras M", "id": "layer-herraduras-m"}
+    ],
+    "salasoficinas": [
+        {"tittle": "Salas de Juntas", "id": "layer-salas"},
+        {"tittle": "Salas Generales", "id": "layer-utils"},
+        {"tittle": "Oficinas", "id": "layer-oficinas"}
+    ],
+    "generals": [
+        { "tittle": "Pasillos", "id": "layer-pasillos" },
+        { "tittle": "Salidas", "id": "layer-salidas" },
+        { "tittle": "W.C.", "id": "layer-wc" },
+        { "tittle": "Jardines", "id": "layer-jardines" },
+        { "tittle": "Estancias", "id": "layer-estancias" },
+        { "tittle": "Foros", "id": "layer-foros" },
+        { "tittle": "Cafeterias", "id": "layer-cafeterias" },
+        { "tittle": "Lugares Asignados", "byclass": true, "id": "layer-posicion", "classes": [".posicion"] },
+        { "tittle": "Etiquetas", "byclass": true, "id": "layer-etiquetas", "classes": [".etiquetaH", ".etiqueta-utils", ".etiqueta-salas", ".etiqueta-wc"] }
+    ]
+}

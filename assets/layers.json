@@ -1,0 +1,6 @@
+{
+    "herraduras": ["#layer-herraduras-a", "#layer-herraduras-b", "#layer-herraduras-c", "#layer-herraduras-d", "#layer-herraduras-e", "#layer-herraduras-f", "#layer-herraduras-g", "#layer-herraduras-h", "#layer-herraduras-i", "#layer-herraduras-j", "#layer-herraduras-k", "#layer-herraduras-l", "#layer-herraduras-m"],
+    "salasoficinas": ["#layer-oficinas", "#layer-salas", "#layer-utils"],
+    "generals": ["#layer-pasillos", "#layer-wc", "#layer-jardines", "#layer-estancias", "#layer-foros", "#layer-cafeterias", "#layer-salidas", ".posicion", ".etiquetaH", ".etiqueta-utils", ".etiqueta-salas", ".etiqueta-wc"],
+    "etiquetas": [".etiquetaH", ".etiqueta-utils", ".etiqueta-salas", ".etiqueta-wc"]
+}

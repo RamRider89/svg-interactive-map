@@ -1,0 +1,208 @@
+<!-- Modal -->
+<div class="modal fade" id="modalAsignarPosicion" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalAsignarPosicionLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header alert-dark">
+        <h6 class="modal-title" id="modalAsignarPosicionLabel">Asignar Lugar de Trabajo</h6>
+        <button type="button" class="btn-close btn btn-sm" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle-fill"></i>
+        </button>
+	    </div>
+      <form  id="formAsignarLugar" class="needs-validation" novalidate>
+        <div class="modal-body">
+          <div class="row g-5">
+            <div id="LugarTrabajoInfo" class="col-md-5 col-lg-5 order-md-last">
+
+              <!-- <h5 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-secondary">Lugar de Trabajo</span>
+              </h5> -->
+
+              <div class="card">
+                <div class="card-header" id="LugarTrabajoCard">
+                  <h5 class="mb-0">
+                    <button class="btn btn-sm btn-light w-100" data-bs-toggle="collapse" data-bs-target="#collapseLugarTrabajo" aria-expanded="true" 
+                    aria-controls="collapseLugarTrabajo">
+                      Lugar de Trabajo
+                    </button>
+                  </h5>
+                </div>
+              
+                <div id="collapseLugarTrabajo" class="collapse show" aria-labelledby="LugarTrabajoCard" data-bs-parent="#LugarTrabajoInfo">
+                  <div class="card-body">
+
+                    <ul class="list-group mb-3 ml-3">
+                      <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div><h6 class="my-0">Empresa:</h6></div>
+                        <span id="infoEmpresa" class="text-body-secondary empleadoData">--</span>
+                      </li>
+              
+                      <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div><h6 class="my-0">Centro:</h6></div>
+                        <span id="infoCentro" class="text-body-secondary empleadoData">--</span>
+                      </li>
+
+                      <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div><h6 class="my-0">Nombre Centro:</h6></div> 
+                        <span id="infoCentroName" class="text-body-secondary empleadoData">--</span>
+                      </li>
+
+                      <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div><h6 class="my-0">Edificio:</h6></div>
+                        <span id="infoEdificioTrabajo" class="text-body-secondary grupoData">--</span>
+                      </li>
+
+                      <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div><h6 class="my-0">Tipo de Grupo:</h6></div>
+                        <span id="infoTipoLugarTrabajo" class="text-body-secondary grupoData">--</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div><h6 class="my-0">Grupo:</h6></div>
+                        <span id="infoGrupoLugarTrabajo" class="text-body-secondary grupoData">--</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div><h6 class="my-0">Posición:</h6></div>
+                        <span id="infoPosicionLugarTrabajo" class="text-body-secondary grupoData">--</span>
+                      </li>
+              
+                    </ul>
+                    <div class="col-md-12">
+                      <label for="country" class="form-label">Modalidad de Trabajo:</label>
+                      <select class="form-select form-select-sm" id="infoTipoTrabajo" required="yes">
+                        <option value="">Selecciona...</option>
+                      </select>
+                      <div class="invalid-feedback">Por favor selecciona una opción.</div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+        
+            <div id="EmpleadoInfo" class="col-md-7 col-lg-7">
+              <!-- <h5 class="mb-3">Información de Empleado</h5> -->
+
+              <div class="card">
+                <div class="card-header" id="EmpleadoCard">
+                  <h5 class="mb-0">
+                    <button class="btn btn-sm btn-light w-100" data-bs-toggle="collapse" data-bs-target="#collapseEmpleado"
+                      aria-expanded="true" aria-controls="collapseEmpleado">
+                      Información de Empleado
+                    </button>
+                  </h5>
+                </div>
+
+                <div id="collapseEmpleado" class="collapse show" aria-labelledby="EmpleadoCard"
+                  data-bs-parent="#EmpleadoInfo">
+                  <div class="card-body">
+
+                      <div class="row g-3">
+                        <div class="col-md-12">
+                          <label for="idEmpleado" class="form-label">No. Empleado:</label>
+                          <div class="input-group input-group-sm has-validation">
+                            <span class="input-group-text">#</span>
+                            <input type="text" class="form-control inputData" id="idEmpleado" placeholder="No. empleado" required="yes" maxlength="8">
+                            <button id="btnGetEmpleado" type="button" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                            <div class="invalid-feedback">El número de empleado es requerido.</div>
+                          </div>      
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="input-group input-group-sm justify-content-end w-100">
+                            <span class="input-group-text">Seleccione una foto de perfil: </span>
+                            <button id="btnFotoEmpleado" type="submit" class="btn btn-secondary">
+                              <i class="fa fa-regular fa-image"></i> Foto</button>
+                          </div>
+                        </div>
+              
+                        <ul class="list-group">
+                          <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div><h6 class="my-0">Nombre:</h6></div>
+                            <span id="infoEmpleadoNombre" class="text-body-dark empleadoData">--</span>
+                          </li>
+              
+                          <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div><h6 class="my-0">Puesto:</h6></div>
+                            <span id="infoEmpleadoPuesto" class="text-body-secondary empleadoData">--</span>
+                          </li>
+              
+                          <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div><h6 class="my-0">Email:</h6></div>
+                            <span id="infoEmpleadoEmail" class="text-body-secondary empleadoData">--</span>
+                          </li>
+              
+                          <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div><h6 class="my-0">Teléfono:</h6></div>
+                            <span id="infoEmpleadoTelefono" class="text-body-secondary empleadoData">--</span>
+                          </li>
+              
+                          <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div><h6 class="my-0">Cumpleaños::</h6></div>
+                            <span id="infoEmpleadoCumple" class="text-body-secondary empleadoData">--</span>
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                              <h6 class="my-0">Gerente:</h6>
+                              <small class="text-body-secondary empleadoData">Número clave:</small>
+                            </div>
+                            <div>
+                              <h6 id="infoEmpleadoNomGerente" class="my-0 text-body-dark empleadoData">--</h6>
+                              <small id="infoEmpleadoNumGerente" class="text-body-secondary empleadoData">--</small>
+                            </div>
+              
+                          </li>
+              
+                        </ul>
+
+                        <div class="col-md-12">
+                          <label for="country" class="form-label">Asignar Lider:</label>
+                          <select class="form-select form-select-sm" id="idLiderTrabajo" required="yes">
+                            <option value="">Selecciona...</option>
+                          </select>
+                          <div class="invalid-feedback">Por favor selecciona una opción.</div>
+                        </div>
+
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        
+          <div id="progresBar" class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated hide" role="progressbar" aria-valuenow="0"
+              aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+          </div>
+
+        </div>
+        <div class="modal-footer justify-content-center">
+          <hr class="my-2">
+          <button id="btnAsignarLugar" class="w-50 btn btn-sm btn-primary btn-lg" type="submit">
+            <i class="fa fa-user"></i> Asignar Lugar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="modalConfirmarPosition">
+  <!-- Modal -->
+  <div class="modal fade" id="modalConfirmar" tabindex="-1" role="dialog" aria-labelledby="modalConfirmarLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content shadow-modal">
+        <div class="modal-header">
+          <h6 class="modal-title" id="modalConfirmarLabel">Confirmar</h6>
+        </div>
+        <div class="modal-body">
+          <p class="alert alert-warning">¿Confirma guardar los cambios?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary btn-cancelar" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-sm btn-primary btn-confirmar" data-bs-dismiss="modal"><i class="fa fa-save"></i> Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

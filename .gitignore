@@ -9,6 +9,10 @@
 *.user
 *.userosscache
 *.sln.docstates
+back/
+js/back/
+mapas/back/
+mapas/sanitized/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
