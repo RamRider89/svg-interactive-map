@@ -2,6 +2,8 @@ window.alert = function () { };
 const MINS_DELY_FST_SEARCH = 15;
 const URL_API_CAMPUS = 'http://localhost/diseno/svg-interactive-map/backend/campusdigitalrac/';
 const URL_CAMPUS = 'http://localhost/diseno/svg-interactive-map/';
+//const URL_API_CAMPUS = 'https://sistdesarrollo04.coppel.io/campusdigital/backend/campusdigitalrac-v2/';
+//const URL_CAMPUS = 'https://sistdesarrollo04.coppel.io/campusdigital/';
 //loadFastSearch();
 
 document.getElementById("page-top").style.cursor = "progress";

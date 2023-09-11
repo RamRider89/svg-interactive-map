@@ -197,10 +197,38 @@
         </div>
         <div class="modal-body">
           <p class="alert alert-warning">¿Confirma guardar los cambios?</p>
+
+          <div id="CodigoConfirmacionInfo" class="col-md-12">
+          
+            <div class="card">          
+              <div id="collapseCodigoConfirmacion" class="collapse" aria-labelledby="CodigoConfirmacionCard" data-bs-parent="#CodigoConfirmacionInfo">
+                <div class="card-body">
+
+                  <div class="col-md-12">
+                    <label for="codigoConfirmacion" class="form-label">Código:</label>
+                    <fieldset id="codigoConfirmacion" class='number-code'>
+                      <div>
+                        <input type="text" name='code' class='code-input form-control' required />
+                        <input type="text" name='code' class='code-input form-control' required />
+                        <input type="text" name='code' class='code-input form-control' required />
+                        <input type="text" name='code' class='code-input form-control' required />
+                        <input type="text" name='code' class='code-input form-control' required />
+                        <input type="text" name='code' class='code-input form-control' required />
+                      </div>
+                    </fieldset>
+                    <div class="invalid-feedback">Por favor ingresa el codigo.</div>
+                  </div>
+          
+                </div>
+              </div>
+            </div>
+          
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-sm btn-secondary btn-cancelar" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-sm btn-primary btn-confirmar" data-bs-dismiss="modal"><i class="fa fa-save"></i> Guardar</button>
+          <button type="button" class="btn btn-sm btn-primary btn-confirmar"><i class="fa fa-check"></i> Confirmar</button>
         </div>
       </div>
     </div>

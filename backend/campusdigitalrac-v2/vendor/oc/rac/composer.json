@@ -1,0 +1,29 @@
+{
+    "name": "oc/rac",
+    "description": "Rest API Coppel",
+    "version": "2.0.0",
+    "type": "library",
+    "license": "Propietary",
+    "homepage": "https://developers.coppel.io/#/frameworks/rac",
+    "authors": [
+        {
+            "name": "Sergio Flores",
+            "email": "sangulo@coppel.com"
+        },
+        {
+            "name": "Edgar Ruiz",
+            "email": "eruizp@coppel.com"
+        },
+        {
+            "name": "Carlos Toscano",
+            "email": "ctoscano@coppel.com"
+        }
+    ],
+    "support": {
+        "issues": "https://gitlab.coppel.io/oc/rac/-/issues"
+    },
+    "require": {
+        "guzzlehttp/guzzle": "^7.4"
+    },
+    "minimum-stability": "stable"
+}

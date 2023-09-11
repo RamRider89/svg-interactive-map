@@ -109,34 +109,84 @@ class PositionModule {
 
         const confirmModal = async () => {
             //const modal = new bootstrap.Modal(document.getElementById('modalConfirmar'));
+
             const respuesta = new Promise((resolve, reject) => {
                 $('#modalConfirmar').modal('show');
                 $('#modalConfirmar .btn-confirmar').click(() => {
+                    this.#showButtonLoading('.btn-confirmar');
                     resolve(true);
                 });
                 $('#modalConfirmar .btn-cancelar').click(() => {
                     reject(false);
                 });
             }).then(async (val) => {
-                Employee.showInformation();
-                Position.showInformation();
+                //Employee.showInformation();
+                //Position.showInformation();
+                const asignado = await confirmarPosicion('REGISTRAR', Employee, Position);
+                console.log(asignado);
 
-                const asignado = await confirmarPosicion(Position.id);
+                if (Boolean(parseInt(asignado.consulta[0].CONSULTA)) && Boolean(parseInt(asignado.consulta[0].REGISTRADO))) {
+                    // codigo registrado  
+                    $("#collapseCodigoConfirmacion").addClass("show");
 
-                console.log("Lugar asignado: " + asignado);
+                    // BOTONES MODAL CONFIRMAR
+                    $('#modalConfirmar .btn-confirmar').prop("disabled", false);
+                    $('#modalConfirmar .btn-confirmar').html('<i class="fa fa-check"></i> Confirmar');
+
+                    $('#modalConfirmar .btn-confirmar').click(async () => {
+                        const confirmar = await confirmarPosicion('CONFIRMAR', Employee, Position);
+                        console.log(confirmar);
+                        if (Boolean(parseInt(confirmar.consulta[0].CONSULTA)) && Boolean(parseInt(confirmar.consulta[0].CONFIRMADO))) {
+                            console.log("Codigo confirmado");
+                            $('#modalConfirmar .btn-confirmar').html('<i class="fa fa-check"></i> Confirmar');
+                            $("#collapseCodigoConfirmacion").removeClass("show");
+                            $('#modalConfirmar').modal('hide');
+
+                        }else {
+                            console.warn("Error al confirmar el código");
+                        }
+                    });
+                    
+                }else { 
+                    // error
+                    console.warn("Error al generar el código");
+                }
+
+                
 
 
             }).catch(function (err) {
                 //user clicked cancel
-                console.warn(err)
+                console.warn(err);
             });
         }
 
-        const confirmarPosicion = async (id) => {
-            this.positionService.setPosition(parseInt(id));
-            const peticionPosicion = await this.positionService.getPosition();
-            const positionData = (peticionPosicion.data.response.length > 0) ? peticionPosicion.data.response[0] : null;
-            return (Boolean(parseInt(positionData.asignado)));
+        const confirmarPosicion = async (TIPO_QUERY, Employee, Position) => {
+
+            let code = 0;
+            if (TIPO_QUERY === 'CONFIRMAR') {
+                const inputElements = [...document.querySelectorAll('input.code-input')];
+                code = inputElements.map(({ value }) => value).join('');
+                console.log(code);
+            }
+            const data = {
+                TIPO_QUERY: TIPO_QUERY,
+                idEmpleado: Employee.idEmpleado,
+                emailEmpleado: Employee.empleadoEmaiL,
+                idCentro: Employee.numeroCentro,
+                idPosition: Position.id,
+                tipoMovimiento: "A",
+                idPositionNew: 0,
+                codigo: code
+            };
+
+            this.positionService.setPosition(parseInt(Position.id));
+            this.positionService.genNewCode(data);
+            const peticionCodigo = await this.positionService.setCodigoConfirmacion();
+            const positionData = (peticionCodigo.data.response) ? peticionCodigo.data.response : null;
+
+            // return
+            return positionData;
         }
 
     }
@@ -189,6 +239,49 @@ class PositionModule {
             event.preventDefault();
             return false;
         });
+
+        // BOTONES MODAL CONFIRMAR
+        $('#modalConfirmar .btn-confirmar').click(() => {
+            // ...
+        });
+        $('#modalConfirmar .btn-cancelar').click(() => {
+            $("#collapseCodigoConfirmacion").removeClass("show");
+        });
+
+
+        // INPUTS CODIGO CONFIRMACION
+        const inputElements = [...document.querySelectorAll('input.code-input')];
+
+        inputElements.forEach((ele, index) => {
+            ele.addEventListener('keydown', (e) => {
+                // if the keycode is backspace & the current field is empty
+                // focus the input before the current. Then the event happens
+                // which will clear the "before" input box.
+                (e.keyCode === 8 && e.target.value === '') ? inputElements[Math.max(0, index - 1)].focus() : 0;
+            });
+
+            ele.addEventListener('input', (e) => {
+                // take the first character of the input
+                // this actually breaks if you input an emoji like ....
+                // but I'm willing to overlook insane security code practices.
+                const [first, ...rest] = e.target.value;
+                e.target.value = first ?? ''; // first will be undefined when backspace was entered, so set the input to ""
+                const lastInputBox = index === inputElements.length - 1;
+                const didInsertContent = first !== undefined;
+                if (didInsertContent && !lastInputBox) {
+                    // continue to input the rest of the string
+                    inputElements[index + 1].focus();
+                    inputElements[index + 1].value = rest.join('');
+                    inputElements[index + 1].dispatchEvent(new Event('input'));
+                }
+            });
+        });
+
+    }
+
+    #showButtonLoading(button) {
+        $(button).prop("disabled", true);
+        $(button).html('<span class="spinner-border spinner-border-sm"></span> Cargando...');
     }
     
 }

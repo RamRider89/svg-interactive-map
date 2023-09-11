@@ -19,5 +19,8 @@
             "type": "vcs",
             "url": "https://gitlab.coppel.io/oc/rac.git/"
         }
-    ]
+    ],
+    "config": {
+        "secure-http": false
+    }
 }

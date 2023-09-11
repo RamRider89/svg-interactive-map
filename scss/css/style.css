@@ -9,7 +9,15 @@
     --text-2xl: clamp(2.0625rem, calc(1.40625rem + 1.3671875vw), 2.5rem);
     --text-3xl: clamp(2.5rem, calc(1.75rem + 1.5625vw), 3rem);
     --text-4xl: clamp(3rem, calc(2.0625rem + 1.953125vw), 3.625rem);
-}
+    --spacing: 8px;
+    --hue: 400;
+    --background1: hsl(214, 14%, 20%);
+    --background2: hsl(214, 14%, 13%);
+    --background3: hsl(214, 14%, 5%);
+    --brand1: hsl(var(--hue) 80% 60%);
+    --text1: hsl(0, 0%, 100%);
+    --text2: hsl(0, 0%, 90%);
+    }
 
 canvas{
     cursor: pointer;
@@ -238,6 +246,24 @@ nav.navbar {
         height: 0.3rem;
         margin-top: 20px;
         border-radius: 0.15rem;
+    }
+
+
+
+    .modal-body #CodigoConfirmacionInfo fieldset.number-code {
+        >div {
+            display: flex;
+            >input:not(:last-child) {
+                margin-right: calc(var(--spacing) * 2);
+            }
+        }
+    }
+
+    #collapseCodigoConfirmacion fieldset.number-code input.code-input {
+            font-size: 0.85rem;
+            width: 1em;
+            text-align: center;
+            flex: 1 0 1em;
     }
 
 
