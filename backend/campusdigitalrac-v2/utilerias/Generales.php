@@ -458,45 +458,51 @@ class Generales
         $mail = new Mail\PHPMailer();
         $mailConfig = DI::getDefault()->get('config')->MAIL;
 
-        //Añadimos todos los datos requeridos para el Mailer
-        $mail->isSMTP();
-        $mail->SMTPAuth = true;
-        $mail->Host = $mailConfig->ip;
-        $mail->Username = $mailConfig->usuario;
-        $mail->Password = $mailConfig->contrasena;
-        $mail->Port = $mailConfig->puerto;
-        $mail->From = $mailConfig->correo;
-        // se agrega para uso de autenticacion mediante tls
-        $mail->SMTPSecure = 'tls';
-        $mail->SMTPOptions = array(
-            'ssl' => array(
-                'verify_peer'       => true,
-                'verify_peer_name'  => false,
-                'allow_self_signed' => true
-            )
-        );
-        $mail->isHTML(true);
-        $mail->FromName = 'Campus Digital';
+        try{
+            //Añadimos todos los datos requeridos para el Mailer
+            $mail->SMTPDebug = 0; //
+            $mail->isSMTP();
+            $mail->SMTPAuth = true;
+            $mail->Host = $mailConfig->ip;
+            $mail->Username = $mailConfig->usuario;
+            $mail->Password = $mailConfig->contrasena;
+            $mail->Port = $mailConfig->puerto;
+            $mail->From = $mailConfig->correo;
+            // se agrega para uso de autenticacion mediante tls
+            $mail->SMTPSecure = 'tls';
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer'       => true,
+                    'verify_peer_name'  => false,
+                    'allow_self_signed' => true
+                )
+            );
+            $mail->isHTML(true);
+            $mail->FromName = 'Campus Digital';
 
-        //Optiene la lista de los correos a los que se enviara correo
-        $Lista_Correos = explode(',', $des_correo);
-        for ($h = 0; $h < count($Lista_Correos); $h++) {
-            $mail->addAddress($Lista_Correos[$h]);
+            //Optiene la lista de los correos a los que se enviara correo
+            $Lista_Correos = explode(',', $des_correo);
+            for ($h = 0; $h < count($Lista_Correos); $h++) {
+                $mail->addAddress($Lista_Correos[$h]);
+            }
+
+            $mail->Subject = ($des_asunto);
+
+            //Creamos el cuerpo del correo
+            $txtMail = ($des_cuerpo);
+
+            //Añadimos el texto al atributo body del objeto mail
+            $mail->Body = $txtMail;
+
+            //Se establece el conjunto de caracteres a UTF-8 para que acepte caracteres especiales en el subject
+            $mail->CharSet = 'UTF-8';
+
+            //Llamamos al metodo send del objeto mail para enviar correo
+            return $mail->send();
+
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
-
-        $mail->Subject = ($des_asunto);
-
-        //Creamos el cuerpo del correo
-        $txtMail = ($des_cuerpo);
-
-        //Añadimos el texto al atributo body del objeto mail
-        $mail->Body = $txtMail;
-
-        //Se establece el conjunto de caracteres a UTF-8 para que acepte caracteres especiales en el subject
-        $mail->CharSet = 'UTF-8';
-
-        //Llamamos al metodo send del objeto mail para enviar correo
-        return $mail->send();
     }
 
     function Decrypt($passphrase, $jsonString)

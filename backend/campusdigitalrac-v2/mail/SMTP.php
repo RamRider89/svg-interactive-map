@@ -600,16 +600,22 @@ class SMTP
     public function connected()
     {
         if (is_resource($this->smtp_conn)) {
-            $eof = $this->smtp_conn['eof'];
-            if ($eof) {
-                //The socket is valid but we are not connected
-                $this->edebug(
-                    'SMTP NOTICE: EOF caught while checking if connected',
-                    self::DEBUG_CLIENT
-                );
-                $this->close();
+            // Error cuando el arreglo no contiene la variable
+            // se corrige con un isset
+            // david.duarte@coppel.com
+            if (isset($this->smtp_conn['eof'])) {
+                $eof = $this->smtp_conn['eof'];
+                if ($eof) {
+                    //The socket is valid but we are not connected
+                    $this->edebug(
+                        'SMTP NOTICE: EOF caught while checking if connected',
+                        self::DEBUG_CLIENT
+                    );
+                    $this->close();
 
-                return false;
+                    return false;
+                }
+ 
             }
 
             return true; //everything looks good
@@ -1206,13 +1212,18 @@ class SMTP
                 break;
             }
             //Timed-out? Log and break
-            $timeout = $this->smtp_conn['timed_out'];
-            if ($timeout) {
-                $this->edebug(
-                    'SMTP -> get_lines(): stream timed-out (' . $this->Timeout . ' sec)',
-                    self::DEBUG_LOWLEVEL
-                );
-                break;
+            // Error cuando el arreglo no contiene la variable
+            // se corrige con un isset
+            // david.duarte@coppel.com
+            if (isset($this->smtp_conn['timed_out'])) {
+                $timeout = $this->smtp_conn['timed_out'];                
+                if ($timeout) {
+                    $this->edebug(
+                        'SMTP -> get_lines(): stream timed-out (' . $this->Timeout . ' sec)',
+                        self::DEBUG_LOWLEVEL
+                    );
+                    break;
+                }
             }
             //Now check if reads took too long
             if ($endtime && time() > $endtime) {

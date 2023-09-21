@@ -130,13 +130,6 @@ class PosicionController extends RESTController
             if ($parametros->TIPO_QUERY == 'REGISTRAR') {
                 if (boolval($response[0]['CONSULTA']) && boolval($response[0]['REGISTRADO'])) {
 
-                    // $args = asunto -- cuerpo -- correo
-                    /* 
-                        $args = {asunto: 'Codigo de confirmación - Campus Digital', 
-                                cuerpo: 'Utiliza el código: '. $codigo .' para confirmar tu lugar de trabajo',
-                                correo: $parametros->emailEmpleado}
-                    */
-
                     $args = (object) [        
                     'asunto' => 'Código de Confirmación - Campus Digital',
                     'codigo' => $parametros->codigo,

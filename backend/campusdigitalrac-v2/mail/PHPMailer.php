@@ -399,7 +399,7 @@ class PHPMailer
      *
      * @var int
      */
-    public $SMTPDebug = 0;
+    public $SMTPDebug = SMTP::DEBUG_OFF;
 
     /**
      * How to handle debug output.
