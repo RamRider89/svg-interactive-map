@@ -14,7 +14,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- ================================================================================================================================================
-CREATE PROCEDURE [dbo].[campus_asignar_posicion] (@idEmpleado INT, @nombre VARCHAR(250), @apellidoPaterno VARCHAR(250), @apellidoMaterno VARCHAR(250), @puesto INT, @centro INT, @correo VARCHAR(250), @telefono INT, @lider INT, @gerente INT, @empresa INT, @tipoTrabajo INT, @cumpleanos DATE, @fotoUrl VARCHAR(250))
+ALTER PROCEDURE [dbo].[campus_asignar_posicion] (@idPosition INT, @idEmpleado INT)
 AS
 BEGIN
 SET NOCOUNT ON;
@@ -25,11 +25,11 @@ SET NOCOUNT ON;
     DECLARE @datePassRegistro AS DATETIME = GETDATE(); -- fecha de registro
 	DECLARE @caducado AS BIT = 0;
 
-    IF (@idEmpleado > 0)
+    IF (@idPosition > 0 AND @idEmpleado > 0)
         BEGIN
-            INSERT INTO CampusUsersPositions 
-            (idEmpleado, nombre, apellidoPaterno, apellidoMaterno, puesto, centro, correo, telefono, lider, gerente, empresa, tipoTrabajo, cumpleanos, fotoUrl)
-            VALUES (@idEmpleado, @nombre, @apellidoPaterno, @apellidoMaterno, @puesto, @centro, @correo, @telefono, @lider, @gerente, @empresa, @tipoTrabajo, @cumpleanos, @fotoUrl);
+
+            UPDATE CampusPositions SET asignado = @FALSE WHERE idEmpleado = @idEmpleado;    -- reset all positions
+            UPDATE CampusPositions SET asignado = @TRUE, idEmpleado = @idEmpleado, fechaAsignado = @datePassRegistro WHERE id = @idPosition;
 
             SELECT @TRUE AS ASIGNADO;
         END
