@@ -125,28 +125,6 @@ export class PositionModule {
             $('#modalConfirmar').modal('show');
         }
 
-        const confirmModalBack = async () => {
-            //const modal = new bootstrap.Modal(document.getElementById('modalConfirmar'));
-
-            const respuesta = new Promise((resolve, reject) => {
-                $('#modalConfirmar').modal('show');
-                $('#btn-confirmar-position').click(() => {
-                    this.#showButtonLoading('.btn-confirmar-position');
-                    resolve(true);
-                });
-
-                $('#modalConfirmar .btn-cancelar').click(() => {
-                    reject(false);
-                });
-            }).then((val) => {
-                // Enviando el codigo al email
-                enviarCodigoEmail(val);
-            }).catch(function (err) {
-                //user clicked cancel
-                console.warn(err);
-            });
-        }
-
         // enviar codigo al email
         const enviarCodigoEmail = async () => {
             this.#showButtonLoading('#btn-confirmar-position');

@@ -124,7 +124,7 @@ export class PositionService {
             );
         });
 
-        peticion.then((response) => { return 0; }).catch((err) => { console.error(err); });
+        peticion.then((response) => { return response; }).catch((err) => { console.error(err); });
         return peticion;
     }
 
