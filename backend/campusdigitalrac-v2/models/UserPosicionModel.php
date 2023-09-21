@@ -62,4 +62,45 @@ class UserPosicionModel extends Modelo
         return $statement->fetchAll();
     }
 
+        // POST ASGINAR SUER POSICION (setUserPosition)
+	// POST | api/setposition/
+    public function setUserPosition($parametros){
+        /**
+          *  @idEmpleado INT, 
+          *  @nombre VARCHAR(250), 
+          *  @apellidoPaterno VARCHAR(250), 
+          *  @apellidoMaterno VARCHAR(250), 
+          *  @puesto INT, 
+          *  @centro INT, 
+          *  @correo VARCHAR(250), 
+          *  @telefono INT, 
+          *  @lider INT, 
+          *  @gerente INT, 
+          *  @empresa INT, 
+          *  @tipoTrabajo INT, 
+          *  @cumpleanos DATE, 
+          *  @fotoUrl VARCHAR(250)
+          */
+
+        $db = DI::getDefault()->get('ConstruNet_des');
+        $statement = $db->prepare('EXEC campus_asignar_user_posicion :empleado, :nombre, :apellidop, :apellidom, :puesto, :centro, :correo, :telefono, :lider, :gerente, :empresa, :tipotr, :cumpleanos, :foto');
+        $statement->bindParam(':empleado', $parametros->idEmpleado, PDO::PARAM_INT);
+        $statement->bindParam(':nombre', $parametros->nombre, PDO::PARAM_STR);
+        $statement->bindParam(':apellidop', $parametros->apellidoPaterno, PDO::PARAM_STR);
+        $statement->bindParam(':apellidom', $parametros->apellidoMaterno, PDO::PARAM_STR);
+        $statement->bindParam(':puesto', $parametros->puesto, PDO::PARAM_INT);
+        $statement->bindParam(':centro', $parametros->centro, PDO::PARAM_INT);
+        $statement->bindParam(':correo', $parametros->correo, PDO::PARAM_STR);
+        $statement->bindParam(':telefono', $parametros->telefono, PDO::PARAM_INT);
+        $statement->bindParam(':lider', $parametros->lider, PDO::PARAM_INT);
+        $statement->bindParam(':gerente', $parametros->gerente, PDO::PARAM_INT);
+        $statement->bindParam(':empresa', $parametros->empresa, PDO::PARAM_INT);
+        $statement->bindParam(':tipotr', $parametros->tipoTrabajo, PDO::PARAM_INT);
+        $statement->bindParam(':cumpleanos', $parametros->cumpleanos, PDO::PARAM_STR);
+        $statement->bindParam(':foto', $parametros->fotoUrl, PDO::PARAM_STR);
+        
+        $statement->execute();
+        return $statement->fetchAll();
+        
+    }
 }

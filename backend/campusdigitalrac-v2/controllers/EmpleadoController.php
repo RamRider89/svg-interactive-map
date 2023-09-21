@@ -25,12 +25,14 @@ class EmpleadoController extends RESTController
     private $logger;
     private $model;
     private $utilerias;
+    private $exception;
 
     public function onConstruct()
     {
         $this->logger = DI::getDefault()->get('logger');
         $this->model = new Modelos\EmpleadoModel();
         $this->utilerias = new Utilerias\Generales();
+        $this->exception = new ExceptionController();
     }
 
 
@@ -47,17 +49,7 @@ class EmpleadoController extends RESTController
             $response = $this->model->getEmpleado($parametros);
             
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $this->respond(['response'=> $response]);
     }
@@ -74,17 +66,7 @@ class EmpleadoController extends RESTController
             $response = $this->model->getEmpleadoCompleto($parametros->idEmpleado);
             
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $this->respond(['response'=> $response]);
     }
@@ -96,17 +78,7 @@ class EmpleadoController extends RESTController
             $response = $this->model->getTipoTrabajo($idTipo);
             
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $this->respond(['response'=> $response]);
     }
@@ -127,17 +99,7 @@ class EmpleadoController extends RESTController
             $response = $this->model->getLiderCentro($parametros);
             
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $this->respond(['response'=> $response]);
     }
@@ -149,17 +111,7 @@ class EmpleadoController extends RESTController
             $response = $this->model->obtenerLineaDenuncia();
 
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $this->respond(['response'=> $response]);
     }
@@ -180,17 +132,7 @@ class EmpleadoController extends RESTController
                 $response->mensaje = 'No se envio el correo, el e-mail no esta definido.';
             }
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $response;
     }
@@ -216,17 +158,7 @@ class EmpleadoController extends RESTController
                 $respuesta->enviado = false;
             }
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $response;
     }

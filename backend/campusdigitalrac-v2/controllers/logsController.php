@@ -20,12 +20,14 @@ class logsController extends RESTController
 {
     private $logger;
     private $mensajeError = "Estructura de datos no válida.";
+    private $exception;
 
 
     public function onConstruct()
     {
         $this->logger = DI::getDefault()->get('logger');
-        $this->log = DI::getDefault()->get('config')->log; 
+        $this->log = DI::getDefault()->get('config')->log;
+        $this->exception = new ExceptionController();
     }
 
     public function logs()
@@ -102,18 +104,7 @@ class logsController extends RESTController
 
     public function lanzarError($error)
     {
-        $mensaje = $error->getMessage();
-        $this->logger->error('[' . __METHOD__ . "] Se lanzó la excepción > $mensaje");
-
-        throw new HTTPException(
-            'No fue posible completar su solicitud, intente de nuevo por favor.',
-            500,
-            [
-                'dev' => $mensaje,
-                'internalCode' => 'SIE1000',
-                'more' => 'Verificar conexión con la base de datos.'
-            ]
-        );
+        $this->exception->newException($ex);
     }
 
     // Funcion para obtener la ip del cliente

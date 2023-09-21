@@ -25,12 +25,14 @@ class UserPosicionController extends RESTController
     private $logger;
     private $model;
     private $utilerias;
+    private $exception;
 
     public function onConstruct()
     {
         $this->logger = DI::getDefault()->get('logger');
         $this->model = new Modelos\UserPosicionModel();
         $this->utilerias = new Utilerias\Generales();
+        $this->exception = new ExceptionController();
     }
 
     public function getCodigoConfirmacion(){
@@ -55,17 +57,7 @@ class UserPosicionController extends RESTController
                 $response->mensaje = 'No se envio el correo, el e-mail no esta definido.';
             }
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $response;
 
@@ -92,17 +84,7 @@ class UserPosicionController extends RESTController
                 $response->mensaje = 'No se envio el correo, el e-mail no esta definido.';
             }
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $response;
     }
@@ -120,19 +102,39 @@ class UserPosicionController extends RESTController
             $response = $this->model->getPosicionByName($parametros->nombrePosicion);
             
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $this->respond(['response'=> $response]);
+    }
+
+    // POST | GUARDAR USER INFO POSICION
+    // POST | api/setuserposition/
+    public function setUserPosicion(){
+        try{
+            $parametros = $this->request->getJsonRawBody();
+            // setUserPosition
+            $parametros->idEmpleado = ($parametros->idEmpleado == '') ? 0 : $parametros->idEmpleado;
+            $parametros->nombre = ($parametros->nombre == '') ? '' : $parametros->nombre;
+            $parametros->apellidoPaterno = ($parametros->apellidoPaterno == '') ? '' : $parametros->apellidoPaterno;
+            $parametros->apellidoMaterno = ($parametros->apellidoMaterno == '') ? '' : $parametros->apellidoMaterno;
+            $parametros->puesto = ($parametros->puesto == '') ? 0 : $parametros->puesto;
+            $parametros->centro = ($parametros->centro == '') ? 0 : $parametros->centro;
+            $parametros->correo = ($parametros->correo == '') ? '' : $parametros->correo;
+            $parametros->telefono = ($parametros->telefono == '') ? 0 : $parametros->telefono;
+            $parametros->lider = ($parametros->lider == '') ? 0 : $parametros->lider;
+            $parametros->gerente = ($parametros->gerente == '') ? 0 : $parametros->gerente;
+            $parametros->empresa = ($parametros->empresa == '') ? 0 : $parametros->empresa;
+            $parametros->tipoTrabajo = ($parametros->tipoTrabajo == '') ? 0 : $parametros->tipoTrabajo;
+            $parametros->cumpleanos = ($parametros->cumpleanos == '') ? NULL : $parametros->cumpleanos;
+            $parametros->fotoUrl = ($parametros->fotoUrl == '') ? NULL : $parametros->fotoUrl;
+
+            // GUANDANDO USER POSICION
+            $response = $this->model->setUserPosition($parametros);
+            
+        } catch (\Exception $ex) {
+            $this->exception->newException($ex);
+        }
+        return $this->respond(['response'=> ['setUserPosition' => $response ]]);
     }
 
 

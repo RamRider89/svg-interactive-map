@@ -50,6 +50,8 @@ class PosicionModel extends Modelo
         return $statement->fetchAll();
     }
 
+    // POST GENERAR CODIGO PARA CONFIRMAR POSICION (setCodigoConfirmacion)
+	// POST | api/codigoconfirmacion/
     public function setCodigoConfirmacion($parametros, $codigo){
         /**
         *    [idEmpleado] [int],
@@ -60,7 +62,6 @@ class PosicionModel extends Modelo
          */
 
         $db = DI::getDefault()->get('ConstruNet_des');
-        //exec [campus_codigo_confirmacion] 'CONFIRMAR', 90279459, 'david.duarte@coppel.com', 230178, 750, 895623, 'A'
         $statement = $db->prepare('EXEC campus_codigo_confirmacion :query, :empleado, :correo, :centro, :posicion, :codigo, :tipomov');
         $statement->bindParam(':query', $parametros->TIPO_QUERY, PDO::PARAM_STR);
         $statement->bindParam(':empleado', $parametros->idEmpleado, PDO::PARAM_INT);
@@ -69,6 +70,22 @@ class PosicionModel extends Modelo
         $statement->bindParam(':posicion', $parametros->idPosition, PDO::PARAM_INT);
         $statement->bindParam(':codigo', $codigo, PDO::PARAM_INT);
         $statement->bindParam(':tipomov', $parametros->tipoMovimiento, PDO::PARAM_STR);
+        $statement->execute();
+        return $statement->fetchAll();
+
+    }
+
+    // POST ASGINAR POSICION (setPosition)
+	// POST | api/setposition/
+    public function setPosition($idPosition, $idEmpleado){
+         /**
+        *    [idPosition] [int],
+        *    [idEmpleado] [int],
+         */
+        $db = DI::getDefault()->get('ConstruNet_des');
+        $statement = $db->prepare('EXEC campus_asignar_posicion :posicion, :empleado');
+        $statement->bindParam(':posicion', $idPosition, PDO::PARAM_INT);
+        $statement->bindParam(':empleado', $idEmpleado, PDO::PARAM_INT);
         $statement->execute();
         return $statement->fetchAll();
 

@@ -25,12 +25,14 @@ class GruposTrabajoController extends RESTController
     private $logger;
     private $model;
     private $utilerias;
+    private $exception;
 
     public function onConstruct()
     {
         $this->logger = DI::getDefault()->get('logger');
         $this->model = new Modelos\GruposTrabajoModel();
         $this->utilerias = new Utilerias\Generales();
+        $this->exception = new ExceptionController();
     }
 
 
@@ -41,17 +43,7 @@ class GruposTrabajoController extends RESTController
             $response = $this->model->getTiposGruposTrabajo($idTipo);
             
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $this->respond(['response'=> $response]);
     }
@@ -75,17 +67,7 @@ class GruposTrabajoController extends RESTController
             $response = $this->model->getGruposTrabajo($parametros);
             
         } catch (\Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Se lanzó la excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo por favor.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
         return $this->respond(['response'=> $response]);
     }

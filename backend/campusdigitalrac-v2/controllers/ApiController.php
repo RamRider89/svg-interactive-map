@@ -12,11 +12,13 @@ class ApiController extends RESTController
 {
     private $logger;
     private $modelo;
+    private $exception;
 
     public function onConstruct()
     {
         $this->logger = DI::getDefault()->get('logger');
         $this->modelo = new Modelos\ApiModel();
+        $this->exception = new ExceptionController();
     }
 
     public function holaMundo()
@@ -26,17 +28,7 @@ class ApiController extends RESTController
         try {
             $response = $this->modelo->holaMundo();
         } catch (Exception $ex) {
-            $mensaje = $ex->getMessage();
-            $this->logger->error('['. __METHOD__ ."] Excepción > $mensaje");
-
-            throw new HTTPException(
-                'No fue posible completar su solicitud, intente de nuevo o contacte con el administrador.',
-                500, [
-                    'dev' => $mensaje,
-                    'internalCode' => 'SIE1000',
-                    'more' => 'Verificar conexión con la base de datos.'
-                ]
-            );
+            $this->exception->newException($ex);
         }
 
         return $response;

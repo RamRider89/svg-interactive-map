@@ -51,7 +51,8 @@ class Module implements IModule
         $posicion->get('/getposicion/{idPosicion}', 'getPosicion');
         $posicion->post('/getposicionbyname', 'getPosicionByName');
         $posicion->post('/getposiciones', 'getPosiciones');
-        $posicion->post('/codigoconfirmacion', 'getCodigoConfirmacion');
+        $posicion->post('/codigoconfirmacion', 'setCodigoConfirmacion');
+        $posicion->post('/setposition', 'setPosicion');
 
 
         // CATALOGO GRUPOS TRABAJO
@@ -85,10 +86,11 @@ class Module implements IModule
         // CATALOGO USER POSITION
         $userPosition = new Collection();
         $userPosition->setPrefix('/api')
-            ->setHandler('\Coppel\Campusdigitalrac\Controllers\UserPositionController')
+            ->setHandler('\Coppel\Campusdigitalrac\Controllers\UserPosicionController')
             ->setLazy(true);
         $userPosition->get('/codigoconfirm', 'getCodigoConfirmacion');
         $userPosition->post('/enviarcorreoconfirm', 'enviarCorreoConfirmacion');
+        $userPosition->post('/setuserposition', 'setUserPosicion');
 
         return [
             $ejemplo,
