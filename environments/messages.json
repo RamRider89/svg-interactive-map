@@ -1,0 +1,81 @@
+{
+    "empleado":{ 
+        "idIncorrecto": {
+            "msj": "El ID de empleado es incorrecto.",
+            "success": false,
+            "type": "alert",
+            "bg": "bg-warning"
+        }
+    },
+    "position": {
+        "errorCargarInfo":{
+            "msj": "Error al cargar la información del lugar de trabajo.",
+            "success": false,
+            "type": "alert",
+            "bg": "bg-warning"
+        },
+        "camposIncompletos": {
+            "msj": "Complete los campos necesarios.",
+            "success": false,
+            "type": "alert",
+            "bg": "bg-warning"
+        },
+        "positionAsignada":{ 
+            "true":{
+                "msj": "Posición de trabajo guardada de manera exitosa.",
+                "type": "alert",
+                "bg": "bg-success"
+            },
+            "false":{
+                "msj": "Error al guardar la posición de trabajo.",
+                "type": "alert",
+                "bg": "bg-warning"
+            }
+        },
+        "userPositionAsignada": {
+            "true": {
+                "msj": "Datos de Usuario relacionados de manera exitosa con la posición de trabajo.",
+                "type": "alert",
+                "bg": "bg-success"
+            },
+            "false": {
+                "msj": "Error al relacionar los Datos de Usuario con la posición de trabajo.",
+                "type": "alert",
+                "bg": "bg-warning"
+            }
+        }
+    },
+    "codigo":
+    {
+        "codigoEnviado": {
+         "msj": "Código enviado de manera exitosa.",
+         "success": true,
+         "type": "alert",
+         "bg": "bg-info"
+        },
+        "errorGenerarCodigo": {
+         "msj": "Error al generar el código.",
+         "success": false,
+         "type": "alert",
+         "bg": "bg-warning"
+        },
+         "codigoconfirmado":{
+            "msj": "Código confirmado de manera exitosa.",
+            "success": true,
+            "type": "alert",
+            "bg": "bg-success"
+        },
+        "errorConfirmarCodigo":{
+            "msj": "Error al confirmar el código.",
+            "success": false,
+            "type": "alert",
+            "bg": "bg-warning"
+        },
+        "tiempoExcedidoConfirmarCodigo": {
+            "msj": "Tiempo excedido para confirmar el código.",
+            "success": false,
+            "type": "alert",
+            "bg": "bg-warning"
+        }
+    }
+}

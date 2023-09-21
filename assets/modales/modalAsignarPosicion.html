@@ -3,14 +3,14 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header alert-dark">
-        <h6 class="modal-title" id="modalAsignarPosicionLabel">Asignar Lugar de Trabajo</h6>
+        <span class="modal-title" id="modalAsignarPosicionLabel">Asignar Lugar de Trabajo</span>
         <button type="button" class="btn-close btn btn-sm" data-bs-dismiss="modal">
           <i class="bi bi-x-circle-fill"></i>
         </button>
 	    </div>
       <form  id="formAsignarLugar" class="needs-validation" novalidate>
         <div class="modal-body">
-          <div class="row g-5">
+          <div class="row g-1">
             <div id="LugarTrabajoInfo" class="col-md-5 col-lg-5 order-md-last">
 
               <!-- <h5 class="d-flex justify-content-between align-items-center mb-3">
@@ -18,14 +18,14 @@
               </h5> -->
 
               <div class="card">
-                <div class="card-header" id="LugarTrabajoCard">
+                <!-- <div class="card-header" id="LugarTrabajoCard">
                   <h5 class="mb-0">
                     <button class="btn btn-sm btn-light w-100" data-bs-toggle="collapse" data-bs-target="#collapseLugarTrabajo" aria-expanded="true" 
                     aria-controls="collapseLugarTrabajo">
                       Lugar de Trabajo
                     </button>
                   </h5>
-                </div>
+                </div> -->
               
                 <div id="collapseLugarTrabajo" class="collapse show" aria-labelledby="LugarTrabajoCard" data-bs-parent="#LugarTrabajoInfo">
                   <div class="card-body">
@@ -83,14 +83,14 @@
               <!-- <h5 class="mb-3">Información de Empleado</h5> -->
 
               <div class="card">
-                <div class="card-header" id="EmpleadoCard">
+                <!-- <div class="card-header" id="EmpleadoCard">
                   <h5 class="mb-0">
                     <button class="btn btn-sm btn-light w-100" data-bs-toggle="collapse" data-bs-target="#collapseEmpleado"
                       aria-expanded="true" aria-controls="collapseEmpleado">
                       Información de Empleado
                     </button>
                   </h5>
-                </div>
+                </div> -->
 
                 <div id="collapseEmpleado" class="collapse show" aria-labelledby="EmpleadoCard"
                   data-bs-parent="#EmpleadoInfo">
@@ -107,13 +107,13 @@
                           </div>      
                         </div>
 
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                           <div class="input-group input-group-sm justify-content-end w-100">
                             <span class="input-group-text">Seleccione una foto de perfil: </span>
                             <button id="btnFotoEmpleado" type="submit" class="btn btn-secondary">
                               <i class="fa fa-regular fa-image"></i> Foto</button>
                           </div>
-                        </div>
+                        </div> -->
               
                         <ul class="list-group">
                           <li class="list-group-item d-flex justify-content-between lh-sm">
@@ -198,28 +198,39 @@
         <div class="modal-body">
           <p class="alert alert-warning">¿Confirma guardar los cambios?</p>
 
-          <div id="CodigoConfirmacionInfo" class="col-md-12">
-          
-            <div class="card">          
-              <div id="collapseCodigoConfirmacion" class="collapse" aria-labelledby="CodigoConfirmacionCard" data-bs-parent="#CodigoConfirmacionInfo">
-                <div class="card-body">
+          <div id="CodigoConfirmacionInfo" class="row hidden">
 
-                  <div class="col-md-12">
-                    <label for="codigoConfirmacion" class="form-label">Código:</label>
-                    <fieldset id="codigoConfirmacion" class='number-code'>
-                      <div>
-                        <input type="text" name='code' class='code-input form-control' required />
-                        <input type="text" name='code' class='code-input form-control' required />
-                        <input type="text" name='code' class='code-input form-control' required />
-                        <input type="text" name='code' class='code-input form-control' required />
-                        <input type="text" name='code' class='code-input form-control' required />
-                        <input type="text" name='code' class='code-input form-control' required />
-                      </div>
-                    </fieldset>
-                    <div class="invalid-feedback">Por favor ingresa el codigo.</div>
-                  </div>
+            <div class="col-sm-12" id="divTimerEmail">
+              <div id="timerAlerta" class="alert alert-warning">
+                <span>
+                  Tiempo restante para verificar: <b class="textTime" id="minutosRestantes"></b> : <b class="textTime" id="secondsRestantes"></b>
+                  <br>
+                  Hemos enviado un <b>código</b> de seguridad a su <b>correo</b> electrónico.<br>
+                </span>
+              </div>
+            
+            </div>
           
-                </div>
+            <div class="col-sm-12">        
+              <div class="card">
+                  <div id="collapseCodigoConfirmacion" class="show" aria-labelledby="CodigoConfirmacionCard" data-bs-parent="#CodigoConfirmacionInfo">
+                    <div class="card-body">
+
+                        <label for="codigoConfirmacion" class="form-label">Código:</label>
+                        <fieldset id="codigoConfirmacion" class='number-code'>
+                          <div>
+                            <input type="text" name='code' class='code-input form-control' required />
+                            <input type="text" name='code' class='code-input form-control' required />
+                            <input type="text" name='code' class='code-input form-control' required />
+                            <input type="text" name='code' class='code-input form-control' required />
+                            <input type="text" name='code' class='code-input form-control' required />
+                            <input type="text" name='code' class='code-input form-control' required />
+                          </div>
+                        </fieldset>
+                        <div class="invalid-feedback">Por favor ingresa el codigo.</div>
+              
+                    </div>
+                  </div>
               </div>
             </div>
           
@@ -228,7 +239,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-sm btn-secondary btn-cancelar" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-sm btn-primary btn-confirmar"><i class="fa fa-check"></i> Confirmar</button>
+          <button id="btn-confirmar-position" type="button" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Confirmar</button>
         </div>
       </div>
     </div>

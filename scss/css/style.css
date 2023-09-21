@@ -23,11 +23,22 @@ canvas{
     cursor: pointer;
 }
 
-.toast {
+#notificationCenter{
+    position: relative;
+    min-height: 200px;
+}
+
+#notificationCenter .stackToasts{
     position: absolute;
-    top: 5rem;
-    right: 10px;
-    z-index: 1000;
+    top: 0;
+    right: 0;
+}
+
+.toast {
+    position: relative;
+    right: 0;
+    z-index: 2000;
+    flex-basis: 0!important;
 }
 
 .dropdown-menu-query {
@@ -247,6 +258,8 @@ nav.navbar {
         margin-top: 20px;
         border-radius: 0.15rem;
     }
+    .modal-body .list-group-item {padding: 0.5rem 1rem;}
+    .modal-body .card-body {padding: 1rem;}
 
 
 

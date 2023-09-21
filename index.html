@@ -22,6 +22,8 @@
     <link href="scss/css/sb-admin-2.css" rel="stylesheet">
     <link href="scss/css/style.css" rel="stylesheet">
     <link href="scss/css/mapa.css" rel="stylesheet">
+
+    <script type="module" src="environments/config.env.js"></script>
 </head>
 
 <body id="page-top">
@@ -42,7 +44,29 @@
                 <!-- Begin Page Content -->
                 <div class="" id="page-content">
 
-                    <div id="imageContainer" data-bs-toggle="collapse"></div>
+                    <div id="notificationCenter" class="w-100 p-4 d-flex flex-column align-items-end " aria-live="polite" aria-atomic="true">
+                        <!-- Position it -->
+                    
+                            <!-- <div class="toast bg-info text-white fade show" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="toast-header">
+                                    <strong class="mr-auto">Notificación</strong>
+                                    <button type="button" class="ml-2 mb-1 close" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="toast-body"></div>
+                            </div>
+
+                            <div class="toast bg-dark text-white fade show" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="toast-header">
+                                    <strong class="mr-auto">Notificación</strong>
+                                    <button type="button" class="ml-2 mb-1 close" data-bs-dismiss="toast" aria-label="Close"><span
+                                            aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="toast-body"></div>
+                            </div> -->
+                    
+                    </div>
+
+                    <div id="imageContainer"></div>
                     
                     <div class="controls">
                         <button id="zoom-in" class="btn btn-sm btn-dark controls-button">
@@ -114,26 +138,28 @@
     <script src="app/directives/svg-pan-zoom.js"></script>
 
     <!-- app level custom scripts -->
-    <script src="app/app.js"></script>
-    <script src="app/modules/dashboard.module.js"></script>
-    <script src="app/modules/campus.module.js"></script>
-    <script src="app/modules/mapa.module.js"></script>
-    <script src="app/modules/position.module.js"></script>
-    <script src="app/modules/empleado.module.js"></script>
+    <script type="module" src="app/app.js"></script>
+    <script type="module" src="app/modules/dashboard.module.js"></script>
+    <script type="module" src="app/modules/campus.module.js"></script>
+    <script type="module" src="app/modules/mapa.module.js"></script>
+    <script type="module" src="app/modules/position.module.js"></script>
+    <script type="module" src="app/modules/empleado.module.js"></script>
+    <script type="module" src="app/modules/notifications.module.js"></script>
     
     <!--- servicios-->
-    <script src="app/services/mapa.services.js"></script>
-    <script src="app/services/tipos.services.js"></script>
-    <script src="app/services/position.services.js"></script>
-    <script src="app/services/empleado.services.js"></script>
-    <script src="app/services/lider.services.js"></script>
+    <script type="module" src="app/services/mapa.services.js"></script>
+    <script type="module" src="app/services/tipos.services.js"></script>
+    <script type="module" src="app/services/position.services.js"></script>
+    <script type="module" src="app/services/empleado.services.js"></script>
+    <script type="module" src="app/services/lider.services.js"></script>
 
     <!-- directives -->
     
 
     <!--- modelos -->
-    <script src="app/models/empleado.model.js"></script>
-    <script src="app/models/position.model.js"></script>
+    <script type="module" src="app/models/empleado.model.js"></script>
+    <script type="module" src="app/models/position.model.js"></script>
+    <script type="module" src="app/models/usersPosition.model.js"></script>
 
 
 </body>
