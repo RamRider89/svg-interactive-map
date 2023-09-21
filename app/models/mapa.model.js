@@ -1,4 +1,4 @@
-class MapaModel {
+export class MapaModel {
     constructor() {
         this.setID(null);
     }

@@ -1,4 +1,4 @@
-class EmpleadoModel {
+export class UsersPosition {
     constructor() {
 
         /**
@@ -19,7 +19,7 @@ class EmpleadoModel {
             [cumpleanos] -> DATE
             [fotoUrl] -> VARCHAR
          */
-
+        this.setID(null);
         this.setIdEmpleado(null);
         this.setNombre(null);
         this.setApellidoPaterno(null);
@@ -37,6 +37,9 @@ class EmpleadoModel {
     }
 
     #MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    getID() { return this.id; }
+    setID(id) { this.id = id; }
 
     getIdEmpleado() { return this.idEmpleado; }
     setIdEmpleado(id) { this.idEmpleado = id; }
@@ -84,17 +87,18 @@ class EmpleadoModel {
     getPosicionEmpleado() {
         const data = {
             idEmpleado: this.idEmpleado,
-            nombreEmpresa: this.nombreEmpresa,
-            numeroCentro: this.numeroCentro,
-            nombreCentro: this.nombreCentro,
-            numeroEmpleado: this.numeroEmpleado,
-            nombreEmpleado: this.nombreEmpleado,
-            nombrePuesto: this.nombrePuesto,
-            numeroTelefono: this.numeroTelefono,
-            fechaNacimiento: this.fechaNacimiento,
-            nombreGerente: this.nombreGerente,
-            numeroGerente: this.numeroGerente,
-            empleadoEmaiL: this.empleadoEmaiL
+            nombre: this.nombre,
+            apellidoPaterno: this.apellidoPaterno,
+            apellidoMaterno: this.apellidoMaterno,
+            puesto: this.puesto,
+            correo: this.correo,
+            telefono: this.telefono,
+            lider: this.lider,
+            gerente: this.gerente,
+            empresa: this.empresa,
+            tipoTrabajo: this.tipoTrabajo,
+            cumpleanos: this.cumpleanos,
+            fotoURL: this.fotoURL
         }
 
         return data;
@@ -103,46 +107,39 @@ class EmpleadoModel {
     setPosicionEmpleado(data) {
         //const data = (args.data.response.length > 0) ? args.data.response[0] : null;
         if (data) {
-            this.setIdEmpleado(String(data.NumeroEmpleado).trim());
-            this.setNombreEmpresa(String(data.NombreEmpresa).trim());
-            this.setNumeroCentro(String(data.Centro).trim());
-            this.setNombreCentro(String(data.NombreCentro).trim());
-            this.setNumeroEmpleado(String(data.NumeroEmpleado).trim());
-            this.setNombreEmpleado(this.#namesToTitleCase(data.Nombre, data.ApellidoPaterno, data.ApellidoMaterno));
-            this.setNombrePuesto(this.#toTitleCase(data.NombrePuesto));
-            this.setNumeroTelefono(String(data.Telefono).trim());
-            this.setFechaNacimiento(this.#getBirthday(String(data.FechaNacimiento).trim()));
-            this.setNombreGerente(this.#namesToTitleCase(data.NombreGerente, data.ApellidoPaternoGerente, data.ApellidoMaternoGerente));
-            this.setNumeroGerente(String(data.NumeroGerente).trim());
+            this.setIdEmpleado(data.idEmpleado);
+            this.setNombre(data.nombre);
+            this.setApellidoPaterno(data.apellidoPaterno);
+            this.setApellidoMaterno(data.apellidoMaterno);
+            this.setPuesto(data.numeroPuesto);
+            this.setCentro(data.numeroCentro);
+            this.setCorreo(data.empleadoEmaiL);
+            this.setTelefono(data.numeroTelefono);
+
+            this.setLider(data.nombre);              // -----
+
+            this.setGerente(data.numeroGerente);
+            this.setEmpresa(data.numeroEmpresa);
+
+            this.setTipoTrabajo(data.nombre);         // -----   
+
+            this.setCumpleanos(data.fechaNacimiento);
+
+            this.setFotoURL(data.nombre);              // -----
+
+
+
+//            numeroEmpleado: this.numeroEmpleado,
+  //          nombreEmpleado: this.nombreEmpleado,
+
+
         } else {
 
         }
     }
 
     showInformation(format = true){
-        console.info(this.getEmpleado());
-    }
-
-    // utils
-    #toTitleCase(texto) {
-        const str = String(texto).trim().toLowerCase();
-        return str.replace(/(?:^|\s)\w/g, function (match) {
-            return match.toUpperCase();
-        });
-    }
-
-    #namesToTitleCase(name, apellPat, apellMat) {
-        const nameCompleto = String(String(name).trim() + ' ' + String(apellPat).trim() + ' ' + String(apellMat).trim()).toLowerCase();
-        return nameCompleto.replace(/(?:^|\s)\w/g, function (match) {
-            return match.toUpperCase();
-        });
-    }
-
-    #getBirthday(fecha) {
-        const nacimiento = new Date(fecha.trim());
-        const day = nacimiento.getDate();
-        const month = nacimiento.getMonth();
-        return String(day + ' de ' + this.#MESES[month]);
+        console.info(this.getPosicionEmpleado());
     }
 
 }

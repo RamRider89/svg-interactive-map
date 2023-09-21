@@ -1,4 +1,5 @@
-class EmpleadoService {
+import { URL_API_CAMPUS, URL_CAMPUS } from '../../environments/config.env.js';
+export class EmpleadoService {
     constructor() { 
         this.setNumeroEmpleado(null);
         this.setNombreEmpleado(null);

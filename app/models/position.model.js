@@ -1,4 +1,4 @@
-class PositionModel {
+export class PositionModel {
     constructor() {
         this.setID(null);
         this.setAsignado(null);

@@ -1,4 +1,6 @@
-class MapaModule{
+import { PositionModule } from './position.module.js';
+
+export class MapaModule{
     constructor() { 
         this.id = null;
         this.positionModule = new PositionModule();

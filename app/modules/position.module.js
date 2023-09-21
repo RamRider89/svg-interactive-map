@@ -1,12 +1,23 @@
-class PositionModule {
+import { PositionModel } from '../models/position.model.js';
+import { PositionService } from '../services/position.services.js';
+import { EmpleadoModule } from './empleado.module.js';
+import { NotificationModule } from './notifications.module.js';
+import { MESSAGES_LIST } from '../../environments/config.env.js';
+
+export class PositionModule {
     constructor() {
         this.position = null;
         this.Position = new PositionModel();
         this.positionService = new PositionService();
         this.empleadoModule = new EmpleadoModule();
+        this.notificationCenter = new NotificationModule();
+        this.timerValidateCodigo = null; // timerGlobal
+        this.bodyToaster = null;
+        this.backgroundToaster = null;
+
     }
     
-    setCampusPosition(id) {
+    async setCampusPosition(id) {
         this.position = id;
         this.getPositionData(this.position);
     }
@@ -27,7 +38,7 @@ class PositionModule {
         if (this.Position) {
             (this.Position.asignado) ? 0 : this.showModalAsignarPosicion();
         } else {
-            console.warn('Error al cargar la información del lugar de trabajo');
+            console.warn(MESSAGES_LIST.position.errorCargarInfo.msj);
         }
     }
 
@@ -94,7 +105,7 @@ class PositionModule {
                 if (!form.checkValidity()) {
                     event.preventDefault();
                     event.stopPropagation();
-                    console.warn('Complete los campos necesarios.');
+                    console.warn(MESSAGES_LIST.position.camposIncompletos.msj);
                     return;
                 } else {
                     event.preventDefault();
@@ -107,60 +118,112 @@ class PositionModule {
             }, false);
         })();
 
+        const btnConfirmar = document.getElementById("btn-confirmar-position");
+
         const confirmModal = async () => {
+            resetTimerVerification();
+            $('#modalConfirmar').modal('show');
+        }
+
+        const confirmModalBack = async () => {
             //const modal = new bootstrap.Modal(document.getElementById('modalConfirmar'));
 
             const respuesta = new Promise((resolve, reject) => {
                 $('#modalConfirmar').modal('show');
-                $('#modalConfirmar .btn-confirmar').click(() => {
-                    this.#showButtonLoading('.btn-confirmar');
+                $('#btn-confirmar-position').click(() => {
+                    this.#showButtonLoading('.btn-confirmar-position');
                     resolve(true);
                 });
+
                 $('#modalConfirmar .btn-cancelar').click(() => {
                     reject(false);
                 });
-            }).then(async (val) => {
-                //Employee.showInformation();
-                //Position.showInformation();
-                const asignado = await confirmarPosicion('REGISTRAR', Employee, Position);
-                console.log(asignado);
-
-                if (Boolean(parseInt(asignado.consulta[0].CONSULTA)) && Boolean(parseInt(asignado.consulta[0].REGISTRADO))) {
-                    // codigo registrado  
-                    $("#collapseCodigoConfirmacion").addClass("show");
-
-                    // BOTONES MODAL CONFIRMAR
-                    $('#modalConfirmar .btn-confirmar').prop("disabled", false);
-                    $('#modalConfirmar .btn-confirmar').html('<i class="fa fa-check"></i> Confirmar');
-
-                    $('#modalConfirmar .btn-confirmar').click(async () => {
-                        const confirmar = await confirmarPosicion('CONFIRMAR', Employee, Position);
-                        console.log(confirmar);
-                        if (Boolean(parseInt(confirmar.consulta[0].CONSULTA)) && Boolean(parseInt(confirmar.consulta[0].CONFIRMADO))) {
-                            console.log("Codigo confirmado");
-                            $('#modalConfirmar .btn-confirmar').html('<i class="fa fa-check"></i> Confirmar');
-                            $("#collapseCodigoConfirmacion").removeClass("show");
-                            $('#modalConfirmar').modal('hide');
-
-                        }else {
-                            console.warn("Error al confirmar el código");
-                        }
-                    });
-                    
-                }else { 
-                    // error
-                    console.warn("Error al generar el código");
-                }
-
-                
-
-
+            }).then((val) => {
+                // Enviando el codigo al email
+                enviarCodigoEmail(val);
             }).catch(function (err) {
                 //user clicked cancel
                 console.warn(err);
             });
         }
 
+        // enviar codigo al email
+        const enviarCodigoEmail = async () => {
+            this.#showButtonLoading('#btn-confirmar-position');
+            const codigo = await confirmarPosicion('REGISTRAR', Employee, Position);
+            console.log(codigo);
+
+            if (Boolean(parseInt(codigo.consulta[0].CONSULTA)) && Boolean(parseInt(codigo.consulta[0].REGISTRADO))) {
+                // codigo registrado  
+                // togle visual user
+                toogleConfirmMessages(true);    // mostrar inputs codigo
+                resetButtonPosition();
+
+                // 15 minutos para verificar
+                timerVerification();
+                btnConfirmar.removeEventListener("click", enviarCodigoEmail, false);
+                btnConfirmar.addEventListener("click", confirmarCodigoEmail, false);
+
+                this.bodyToaster = MESSAGES_LIST.codigo.codigoEnviado.msj;
+                this.backgroundToaster = MESSAGES_LIST.codigo.codigoEnviado.bg;
+
+            } else {
+                // error
+                console.warn("Error al generar el código");
+                this.bodyToaster = MESSAGES_LIST.codigo.errorGenerarCodigo.msj;
+                this.backgroundToaster = MESSAGES_LIST.codigo.errorGenerarCodigo.bg;
+            }
+
+            // notification
+            let data = {
+                message: this.bodyToaster,
+                bg: this.backgroundToaster
+            };
+            this.#generateToast(data);
+            resetButtonPosition();
+        }
+
+        // confirmar codigo recibido
+        const confirmarCodigoEmail = async () => {
+
+            this.#showButtonLoading('#btn-confirmar-position');
+            const confirmar = await confirmarPosicion('CONFIRMAR', Employee, Position);
+            console.log(confirmar);
+            resetButtonPosition();
+            if (confirmar) {
+                if (Boolean(parseInt(confirmar.consulta[0].CONSULTA)) && Boolean(parseInt(confirmar.consulta[0].CONFIRMADO))) {
+
+                    // CODIGO CONFIRMADO
+                    this.bodyToaster = MESSAGES_LIST.codigo.codigoconfirmado.msj;
+                    this.backgroundToaster = MESSAGES_LIST.codigo.codigoconfirmado.bg;
+                    console.log(MESSAGES_LIST.codigo.codigoconfirmado.msj);
+
+                    // GUARDANDO EL LUGAR
+                    loadAsignarLugarTrabajo();
+
+                    // HIDE MODAL
+                    toogleConfirmMessages(false);
+                    $('#modalConfirmar').modal('hide');
+
+                } else {
+                    console.warn(MESSAGES_LIST.codigo.errorConfirmarCodigo.msj);
+
+                    this.bodyToaster = MESSAGES_LIST.codigo.errorConfirmarCodigo.msj;
+                    this.backgroundToaster = MESSAGES_LIST.codigo.errorConfirmarCodigo.bg;
+                }
+            }else {
+                return 0;
+            }
+
+            // notification
+            let data = {
+                message: this.bodyToaster,
+                bg: this.backgroundToaster
+            };
+            this.#generateToast(data);
+        }
+
+        // confirmar posicion
         const confirmarPosicion = async (TIPO_QUERY, Employee, Position) => {
 
             let code = 0;
@@ -169,6 +232,9 @@ class PositionModule {
                 code = inputElements.map(({ value }) => value).join('');
                 console.log(code);
             }
+
+            if (TIPO_QUERY === 'CONFIRMAR' && !code){ return 0;}
+
             const data = {
                 TIPO_QUERY: TIPO_QUERY,
                 idEmpleado: Employee.idEmpleado,
@@ -183,10 +249,108 @@ class PositionModule {
             this.positionService.setPosition(parseInt(Position.id));
             this.positionService.genNewCode(data);
             const peticionCodigo = await this.positionService.setCodigoConfirmacion();
-            const positionData = (peticionCodigo.data.response) ? peticionCodigo.data.response : null;
+            return (peticionCodigo.data.response) ? peticionCodigo.data.response : null;
+        }
 
-            // return
-            return positionData;
+        // GUARDANDO EL LUGAR
+        const asignarPosition = async () => {
+            const asignarPosicion = await this.positionService.setPositionAsignada();
+            return (asignarPosicion.data.response) ? asignarPosicion.data.response : null;
+        }
+
+        // RELACIONANDO EL USUARIO CON EL LUGAR
+        const asignarUserPosition = async () => {
+            const asignarUserPosicion = await this.positionService.setPositionAsignada();
+            return (asignarUserPosicion.data.response) ? asignarUserPosicion.data.response : null;
+        }
+
+        const loadAsignarLugarTrabajo = async () => {
+            // completando datos del empleado
+            // ENVIAR PARAMETROS QUE FALTAN
+
+
+            const asignar = await asignarPosition();
+            const consulta = Boolean(parseInt(asignar.setPosicion[0].ASIGNADO));
+
+            // notification
+            let data = {
+                message: MESSAGES_LIST.position.positionAsignada[consulta].msj,
+                bg: MESSAGES_LIST.position.positionAsignada[consulta].bg
+            };
+            this.#generateToast(data);
+
+            (consulta) ? loadRelacionarUsuarioPosicion(asignar) : 0;
+        }
+
+        const loadRelacionarUsuarioPosicion = async (response) => {
+            // const relacionar = await asignarUserPosition();
+            // const consulta = Boolean(parseInt(relacionar.setPosicion[0].ASIGNADO));
+
+            // // notification
+            // let data = {
+            //     message: MESSAGES_LIST.position.positionAsignada[consulta].msj,
+            //     bg: MESSAGES_LIST.position.positionAsignada[consulta].bg
+            // };
+            // this.#generateToast(data);
+        }
+
+        // timer 15 minutos para verificar
+        const timerVerification = () => {
+            const dateInicio = new Date();
+            let minutosCorriendo = 0, segundosCorriendo = 0;
+            let minutosRestantes, segundosRestantes, now;
+
+            // INTERVALO DE TIEMPO CADA SEGUNDO HASTA AGOTAR 15 MINUTOS DE ESPERA
+            this.timerValidateCodigo = setInterval(() => {
+
+                now = new Date();
+                minutosCorriendo = Math.floor(((now - dateInicio) % (1000 * 60 * 60)) / (1000 * 60));
+                segundosCorriendo = Math.floor(((now - dateInicio) % ((1000 * 60)) / 1000));
+                minutosRestantes = 1 - minutosCorriendo;
+                segundosRestantes = 60 - segundosCorriendo;
+
+                $("#minutosRestantes").text(minutosRestantes);
+                $("#secondsRestantes").text(segundosRestantes);
+                if (minutosCorriendo >= 2 && segundosCorriendo >= 0) {
+                    
+                    // notification
+                    let data = {
+                        message: MESSAGES_LIST.codigo.tiempoExcedidoConfirmarCodigo.msj,
+                        bg: MESSAGES_LIST.codigo.tiempoExcedidoConfirmarCodigo.bg
+                    };
+                    this.#generateToast(data);
+                    console.warn(MESSAGES_LIST.codigo.tiempoExcedidoConfirmarCodigo.msj);
+
+                    resetTimerVerification();
+                    return;
+                }
+            }, 1000);
+        }
+
+        const resetTimerVerification = () => {
+            clearInterval(this.timerValidateCodigo);
+            btnConfirmar.removeEventListener("click", confirmarCodigoEmail, false);
+            btnConfirmar.addEventListener("click", enviarCodigoEmail, false);
+
+            $(".textTime").text('00'); // reset time
+            $('.code-input').val('');
+            toogleConfirmMessages(false);
+        }
+
+        // UITILS - VISUAL
+        const resetButtonPosition = () => {
+            $('#btn-confirmar-position').prop("disabled", false);
+            $('#btn-confirmar-position').html('<i class="fa fa-check"></i> Confirmar');
+        }
+
+        const toogleConfirmMessages = (status) => {
+            if (status) {
+                $('#modalConfirmar p.alert').hide();
+                $('#CodigoConfirmacionInfo').removeClass("hidden"); //show card
+            } else {
+                $('#modalConfirmar p.alert').show();
+                $('#CodigoConfirmacionInfo').addClass("hidden"); // hidde card
+            }
         }
 
     }
@@ -226,7 +390,7 @@ class PositionModule {
 
         $("#btnGetEmpleado").on('click', () => {
             const idEmpleado = parseInt($("#idEmpleado").val());
-            (idEmpleado > 0) ? this.#getEmpleado(idEmpleado) : console.warn("El ID de empleado es incorrecto.");
+            (idEmpleado > 0) ? this.#getEmpleado(idEmpleado) : console.warn(MESSAGES_LIST.empleado.idIncorrecto.msj);
         });
 
         // eliminando la opcion de pegar en el input
@@ -241,7 +405,7 @@ class PositionModule {
         });
 
         // BOTONES MODAL CONFIRMAR
-        $('#modalConfirmar .btn-confirmar').click(() => {
+        $('.btn-confirmar-position').click(() => {
             // ...
         });
         $('#modalConfirmar .btn-cancelar').click(() => {
@@ -259,6 +423,8 @@ class PositionModule {
                 // which will clear the "before" input box.
                 (e.keyCode === 8 && e.target.value === '') ? inputElements[Math.max(0, index - 1)].focus() : 0;
             });
+
+            $(ele).validCaracteresEspeciales("0123456789");
 
             ele.addEventListener('input', (e) => {
                 // take the first character of the input
@@ -282,6 +448,32 @@ class PositionModule {
     #showButtonLoading(button) {
         $(button).prop("disabled", true);
         $(button).html('<span class="spinner-border spinner-border-sm"></span> Cargando...');
+    }
+
+    #generateToast(data){
+        let idToaster;
+        idToaster = 'toast' + Math.floor(Math.random() * 1000);
+        // notification
+        let args = {
+            id: idToaster,
+            title: 'Notificación',
+            message: data.message,
+            background: data.bg,
+            animation: false,
+            autohide: true,
+            delay: 4000
+        }
+        this.notificationCenter.setNewToast(args);
+        const toast = this.notificationCenter.getToast;
+
+        $("#notificationCenter").append(toast);
+
+        $('#' + idToaster).toast({
+            animation: args.animation,
+            delay: args.delay
+        });
+
+        $('#' + idToaster).toast('show');
     }
     
 }

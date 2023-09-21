@@ -1,4 +1,5 @@
-class LiderService {
+import { URL_API_CAMPUS, URL_CAMPUS } from '../../environments/config.env.js';
+export class LiderService {
     constructor(centro) { 
         this.centro = centro;
     }

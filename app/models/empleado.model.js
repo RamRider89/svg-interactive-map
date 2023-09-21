@@ -1,14 +1,20 @@
-class EmpleadoModel {
+export class EmpleadoModel {
     constructor() {
         this.setIdEmpleado(null);
+        this.setNumeroEmpresa(null);
         this.setNombreEmpresa(null);
         this.setNumeroCentro(null);
         this.setNombreCentro(null);
         this.setNumeroEmpleado(null);
-        this.setNombreEmpleado(null);
+        this.setNombre(null);
+        this.setApellidoPaterno(null);
+        this.setApellidoMaterno(null);
+        this.setNombreCompleto(null);
+        this.setNumeroPuesto(null);
         this.setNombrePuesto(null);
         this.setNumeroTelefono(null);
         this.setFechaNacimiento(null);
+        this.setFechaCumpleanos(null);
         this.setNombreGerente(null);
         this.setNumeroGerente(null);
         this.setEmpleadoEmaiL(null);
@@ -19,8 +25,8 @@ class EmpleadoModel {
     getIdEmpleado() { return this.idEmpleado; }
     setIdEmpleado(id) { this.idEmpleado = id; }
 
-    getNombreEmpresa() { return this.nombreEmpresa; }
-    setNombreEmpresa(empresa) { this.nombreEmpresa = empresa; }
+    getNumeroEmpresa() { return this.numeroEmpresa; }
+    setNumeroEmpresa(empresa) { this.numeroEmpresa = empresa; }
 
     getNombreEmpresa() { return this.nombreEmpresa; }
     setNombreEmpresa(empresa) { this.nombreEmpresa = empresa; }
@@ -34,8 +40,20 @@ class EmpleadoModel {
     getNumeroEmpleado() { return this.numeroEmpleado; }
     setNumeroEmpleado(numeroEmpleado) { this.numeroEmpleado = numeroEmpleado; }
 
-    getNombreEmpleado() { return this.nombreEmpleado; }
-    setNombreEmpleado(nombreEmpleado) { this.nombreEmpleado = nombreEmpleado; }
+    getNombre() { return this.nombre; }
+    setNombre(nombre) { this.nombre = nombre; }
+
+    getApellidoPaterno() { return this.apellidoPaterno; }
+    setApellidoPaterno(apellidoPaterno) { this.apellidoPaterno = apellidoPaterno; }
+
+    getApellidoMaterno() { return this.apellidoMaterno; }
+    setApellidoMaterno(apellidoMaterno) { this.apellidoMaterno = apellidoMaterno; }
+
+    getNombreCompleto() { return this.nombreCompleto; }
+    setNombreCompleto(nombreCompleto) { this.nombreCompleto = nombreCompleto; }
+
+    getNumeroPuesto() { return this.numeroPuesto; }
+    setNumeroPuesto(numeroPuesto) { this.numeroPuesto = numeroPuesto; }
 
     getNombrePuesto() { return this.nombrePuesto; }
     setNombrePuesto(nombrePuesto) { this.nombrePuesto = nombrePuesto; }
@@ -45,6 +63,9 @@ class EmpleadoModel {
 
     getFechaNacimiento() { return this.fechaNacimiento; }
     setFechaNacimiento(fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
+
+    getFechaCumpleanos() { return this.fechaCumpleanos; }
+    setFechaCumpleanos(fechaCumpleanos) { this.fechaCumpleanos = fechaCumpleanos; }
 
     getNombreGerente() { return this.nombreGerente; }
     setNombreGerente(nombreGerente) { this.nombreGerente = nombreGerente; }
@@ -67,6 +88,7 @@ class EmpleadoModel {
             nombrePuesto: this.nombrePuesto,
             numeroTelefono: this.numeroTelefono,
             fechaNacimiento: this.fechaNacimiento,
+            fechaCumpleanos: this.fechaCumpleanos,
             nombreGerente: this.nombreGerente,
             numeroGerente: this.numeroGerente,
             empleadoEmaiL: this.empleadoEmaiL
@@ -79,16 +101,27 @@ class EmpleadoModel {
         //const data = (args.data.response.length > 0) ? args.data.response[0] : null;
         if (data) {
             this.setIdEmpleado(String(data.NumeroEmpleado).trim());
+            this.setNumeroEmpresa(String(data.Empresa).trim());
             this.setNombreEmpresa(String(data.NombreEmpresa).trim());
             this.setNumeroCentro(String(data.Centro).trim());
             this.setNombreCentro(String(data.NombreCentro).trim());
             this.setNumeroEmpleado(String(data.NumeroEmpleado).trim());
-            this.setNombreEmpleado(this.#namesToTitleCase(data.Nombre, data.ApellidoPaterno, data.ApellidoMaterno));
+            this.setNombre(this.#namesToTitleCase(data.Nombre));
+            this.setApellidoPaterno(this.#namesToTitleCase(data.ApellidoPaterno));
+            this.setApellidoMaterno(this.#namesToTitleCase(data.ApellidoMaterno));
+            this.setNombreCompleto(this.#namesToTitleCase(data.Nombre, data.ApellidoPaterno, data.ApellidoMaterno));
+            this.setNumeroPuesto(String(data.NumeroPuesto).trim());
             this.setNombrePuesto(this.#toTitleCase(data.NombrePuesto));
             this.setNumeroTelefono(String(data.Telefono).trim());
-            this.setFechaNacimiento(this.#getBirthday(String(data.FechaNacimiento).trim()));
+            this.setFechaNacimiento(String(data.FechaNacimiento).trim());
+            this.setFechaCumpleanos(this.#getBirthday(String(data.FechaNacimiento).trim()));
             this.setNombreGerente(this.#namesToTitleCase(data.NombreGerente, data.ApellidoPaternoGerente, data.ApellidoMaternoGerente));
             this.setNumeroGerente(String(data.NumeroGerente).trim());
+    
+            // this.setLider();
+            // this.setTipoTrabajo();
+            // this.setFotoURL();
+
         } else {
 
         }

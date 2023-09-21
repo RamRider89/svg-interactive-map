@@ -1,5 +1,5 @@
 import { URL_API_CAMPUS, URL_CAMPUS } from '../../environments/config.env.js';
-export class PositionService {
+export class UserPositionService {
     constructor() { 
         this.position = null;
     }
@@ -33,10 +33,6 @@ export class PositionService {
 
     setCodigoConfirmacion() {
         return this.#setCodigoConfirmacion(this.id);
-    }
-
-    setPositionAsignada() {
-        return this.#setPosition(this.id);
     }
 
     async #getPositionByName(position) {
@@ -110,36 +106,6 @@ export class PositionService {
                 $.ajax({
                     type: 'POST',
                     url: URL_API_CAMPUS + 'api/codigoconfirmacion/',
-                    dataType: 'json',
-                    data: JSON.stringify(data),
-                    async: true,
-                    beforeSend: function () { },
-                    success: function (response) {
-                        return (response.meta.status == "SUCCESS") ? response.data.response : null;
-                    },
-                    error: function (request, status, error) {
-                        console.warn(error.responseText);
-                    }
-                }).done(function () { }),
-            );
-        });
-
-        peticion.then((response) => { return 0; }).catch((err) => { console.error(err); });
-        return peticion;
-    }
-
-    async #setPosition(id) {
-        const data = {
-            idPosition: id,
-            idEmpleado: this.idEmpleado
-        };
-
-        const peticion = new Promise((resolve) => {
-            resolve(
-                // ASIGNANDO LA POSICION
-                $.ajax({
-                    type: 'POST',
-                    url: URL_API_CAMPUS + 'api/setposition/',
                     dataType: 'json',
                     data: JSON.stringify(data),
                     async: true,

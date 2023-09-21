@@ -1,4 +1,8 @@
-class EmpleadoModule {
+import { EmpleadoService } from '../services/empleado.services.js';
+import { LiderService } from '../services/lider.services.js';
+import { EmpleadoModel } from '../models/empleado.model.js';
+
+export class EmpleadoModule {
     constructor() {
         this.id = null;
         this.empleadoService = new EmpleadoService();
@@ -31,12 +35,14 @@ class EmpleadoModule {
         const peticionEmpleado = await this.empleadoService.getEmpleadoData();
         const empleadoData = (peticionEmpleado.data.response.length > 0) ? peticionEmpleado.data.response[0] : null;
 
+        console.log(empleadoData);
+
         // EMPLEADO MODEL
         this.Empleado.setEmpleado(empleadoData);
         this.#setProgresBarLoad('#progresBar', 60);
 
         // GET EMAIL
-        this.empleadoService.setEmpleadoName(this.Empleado.nombreEmpleado);
+        this.empleadoService.setEmpleadoName(this.Empleado.getNombreCompleto);
         const peticionContacto = await this.empleadoService.getContactoEmpleado;
         const contactoData = (peticionContacto.data.response.length > 0) ? peticionContacto.data.response[0] : null;
         const empleadoEmail = (contactoData) ? contactoData.email : null;
@@ -57,7 +63,7 @@ class EmpleadoModule {
             $("#infoEmpleadoPuesto").text(employee.nombrePuesto);
             $("#infoEmpleadoEmail").text(employee.empleadoEmaiL);
             $("#infoEmpleadoTelefono").text(employee.numeroTelefono);
-            $("#infoEmpleadoCumple").text(employee.fechaNacimiento);
+            $("#infoEmpleadoCumple").text(employee.fechaCumpleanos);
             $("#infoEmpleadoNomGerente").text(employee.nombreGerente);
             $("#infoEmpleadoNumGerente").text(employee.numeroGerente);
 

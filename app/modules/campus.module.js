@@ -1,3 +1,8 @@
+import { MapaService } from '../services/mapa.services.js';
+import { TiposService } from '../services/tipos.services.js';
+import { MapaModule } from './mapa.module.js';
+import { PositionModule } from './position.module.js';
+
 $("body").ready(function () {
 
     const mapaService = new MapaService();
@@ -393,4 +398,5 @@ $("body").ready(function () {
             return String(day + ' de ' + MESES[month]);
         }
     }
+
 });

@@ -1,14 +1,13 @@
-window.alert = function () { };
-const MINS_DELY_FST_SEARCH = 15;
-const URL_API_CAMPUS = 'http://localhost/diseno/svg-interactive-map/backend/campusdigitalrac/';
-const URL_CAMPUS = 'http://localhost/diseno/svg-interactive-map/';
-//const URL_API_CAMPUS = 'https://sistdesarrollo04.coppel.io/campusdigital/backend/campusdigitalrac-v2/';
-//const URL_CAMPUS = 'https://sistdesarrollo04.coppel.io/campusdigital/';
-//loadFastSearch();
+import { MINS_DELY_FST_SEARCH, MENU_ITEMS, MESSAGES_LIST } from '../environments/config.env.js';
 
+window.alert = function () { };
+//loadFastSearch();
 document.getElementById("page-top").style.cursor = "progress";
 let isCheckedOption = (arg) => $(arg)[0].checked ? true : false;
 let colorValidation = (arg) => arg ? '#7dd57d' : '#ff3f3f';
+
+console.log(MENU_ITEMS);
+console.log(MESSAGES_LIST);
 
 const listLayersStyles = {
     pasillos: ['pasillos'],
@@ -16,7 +15,6 @@ const listLayersStyles = {
     salas: ['muros-salas', 'etiqueta-salas'],
     oficinas: ['oficina', 'etiqueta-oficina']
 }
-
 
 $("body").ready(function () {
     console.log("-> Loading app.");
@@ -37,10 +35,12 @@ $("body").ready(function () {
 
     });
 
-
-
     $(".closeCard").on("click", function () {
         this.parentNode.parentNode.childNodes[3].classList.add("hidden");
+    });
+
+    $("#imageContainer").click(function () {
+        $(".menu-layers").removeClass("show");
     });
   
 });
@@ -170,8 +170,10 @@ function loadFunctionality() {
         e.preventDefault();
     });
 
-    
-    
+    function setLocalSideBarStyle(){
+        $("#Dashboard").addClass('active');
+    }
+
 }
 
 function loadFastSearch() {
@@ -267,26 +269,15 @@ function loadTable(table) {
 }
 
 
-function loadMenuLayers() {
+async function loadMenuLayers() {
     
-    $.ajax({
-        method: 'GET',
-        url: './assets/menu.json',
-        dataType: 'json',
-        cache: false,
-        success: async function (menu) {
-            if (menu) {
-                await readMenuOptions(menu)
-                    .then((menu) => { console.log(menu) })
-                    .catch((err) => { console.error(err) })
-                    .finally(() => { loadSwitchOptions(menu); });  
-            }
-        },
-        error: function () { console.warn('Error al cargar el menu'); },
-        complete: function () {
 
-        }
-    });
+    if (MENU_ITEMS) {
+        await readMenuOptions(MENU_ITEMS)
+            .then((MENU_ITEMS) => { console.log(MENU_ITEMS) })
+            .catch((err) => { console.error(err) })
+            .finally(() => { loadSwitchOptions(MENU_ITEMS); });  
+    }
 
     async function readMenuOptions(main) {
         return new Promise((resolve, reject) => {
@@ -356,7 +347,3 @@ function loadMenuLayers() {
 
 
 }
-
-
-
-
