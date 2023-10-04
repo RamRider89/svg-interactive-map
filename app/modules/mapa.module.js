@@ -1,16 +1,31 @@
 import { PositionModule } from './position.module.js';
+import { PositionService } from '../services/position.services.js';
 
 export class MapaModule{
     constructor() { 
         this.id = null;
         this.positionModule = new PositionModule();
+        this.positionService = new PositionService();
+        this.allPositions = null;
     }
     
     setMapaCampusControls(id) {
         this.id = id;
-        this.setEvents();
+        this.loadAllPositions();
         this.setControls();
     }
+
+    // loadAllPositions
+    async loadAllPositions() {
+        // getPosiciones
+        const status = { asignada: 4 };
+        const peticion = await this.positionService.getAllPositions(status);
+        this.allPositions = (peticion.data.response.length > 0) ? peticion.data.response : null;
+        localStorage.setItem("ALLPOSITIONS", JSON.stringify(this.allPositions));
+
+        this.setEvents();
+    }
+    
 
     setEvents() {
         console.log("-> Set positions events.");
@@ -34,11 +49,40 @@ export class MapaModule{
         herraduras.forEach(item => { paths.push(item.querySelectorAll("g.posicion")); });
 
         paths.forEach(grupo => {
-            grupo.forEach(element => element.addEventListener("click", () => { (click) ? this.positionModule.setCampusPosition(element.id) : 0; }));
-            
+            grupo.forEach(element => element.addEventListener("click", () => { (click) ? this.positionModule.setCampusPosition(element.id) : 0; })); 
         });
 
-        //loadDataCampusGeneral();
+        setTimeout(() => {
+            this.setVisualDetails(herraduras, paths); 
+        }, 2000);
+    }
+
+    setVisualDetails(herraduras, paths) {
+        console.log("-> Set visual details.");
+        let allPositionsNames = [];
+
+        // paths.forEach(grupo => {
+        //     grupo.forEach(position => { allPositionsNames.push(position.id); });
+        // });
+
+        // Object.freeze(allPositionsNames);
+
+        //this.allPositions.forEach(position => { console.log(position.nombre); });
+        /**
+         * position.id
+         * position.idGrupo
+         * position.nombre
+         * position.asignado
+         * position.idEmpleado
+         * position.fechaAsignado
+         */
+
+        const asignadas = this.allPositions.filter((position) => parseInt(position.asignado) === 1 && parseInt(position.idEmpleado) > 0);
+
+        asignadas.forEach(position => { 
+            $("#" + position.nombre + " > .asiento").addClass('asientoOcupado');
+            $("#" + position.nombre + " > .respaldo").addClass('respaldoOcupado');
+        });
     }
 
     setControls() {

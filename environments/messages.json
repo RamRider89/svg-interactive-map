@@ -5,6 +5,18 @@
             "success": false,
             "type": "alert",
             "bg": "bg-warning"
+        },
+        "noExiste": {
+            "msj": "El empleado no se encuentra en la Base de Datos.",
+            "success": false,
+            "type": "alert",
+            "bg": "bg-warning"
+        },
+        "noExisteEmail": {
+            "msj": "El empleado no cuenta con email registrado en la Base de Datos.",
+            "success": false,
+            "type": "alert",
+            "bg": "bg-warning"
         }
     },
     "position": {
@@ -30,6 +42,11 @@
                 "msj": "Error al guardar la posición de trabajo.",
                 "type": "alert",
                 "bg": "bg-warning"
+            },
+            "cancel": {
+                "msj": "Posición de trabajo cancelada de manera exitosa.",
+                "type": "alert",
+                "bg": "bg-danger"
             }
         },
         "userPositionAsignada": {
@@ -43,39 +60,104 @@
                 "type": "alert",
                 "bg": "bg-warning"
             }
+        },
+        "userPositionConfirmar": {
+            "false": {
+                "asunto": "Confirmación de Lugar de Trabajo Asignado.",
+                "msj": "Estimad@: <b> %NOMBRE% </b> le enviamos este mensaje para confirmarle que su lugar de trabajo se ha guardado de manera correcta:",
+                "adicional": "Posición:<b> %POSITION% </b><br>Grupo:<b> %GRUPO% </b><br>Edificio:<b> %EDIFICIO% </b>",
+                "success": true,
+                "type": "alert",
+                "bg": "bg-success"
+            },
+            "true": {
+                "asunto": "Lugar de Trabajo Cancelado.",
+                "msj": "Estimad@: <b> %NOMBRE% </b> le enviamos este mensaje para confirmarle que su lugar de trabajo se ha cancelado de manera correcta:",
+                "adicional": "",
+                "success": true,
+                "type": "alert",
+                "bg": "bg-success"
+            }
         }
     },
     "codigo":
     {
-        "codigoEnviado": {
-         "msj": "Código enviado de manera exitosa.",
-         "success": true,
-         "type": "alert",
-         "bg": "bg-info"
+        "enviado": {
+            "true": {
+                "msj": "Código enviado de manera exitosa.",
+                "success": true,
+                "type": "alert",
+                "bg": "bg-info"
+            },
+            "false": {
+                "msj": "Error al generar el código.",
+                "success": false,
+                "type": "alert",
+                "bg": "bg-warning"
+            }
         },
-        "errorGenerarCodigo": {
-         "msj": "Error al generar el código.",
-         "success": false,
-         "type": "alert",
-         "bg": "bg-warning"
+        "confirmado":{
+            "true":{
+                "msj": "Código confirmado de manera exitosa.",
+                "success": true,
+                "type": "alert",
+                "bg": "bg-success"
+            },
+            "false":{
+                "msj": "Error al confirmar el código.",
+                "success": false,
+                "type": "alert",
+                "bg": "bg-warning"
+            },
+            "tiempoExcedido": {
+                "msj": "Tiempo excedido para confirmar el código.",
+                "success": false,
+                "type": "alert",
+                "bg": "bg-warning"
+            }
+        }
+        
+    },
+    "modal":{
+        "alta": {
+            "false": {
+                "title": "Asignar Lugar de Trabajo",
+                "success": true,
+                "type": "alert",
+                "bg": "alert-dark"
+            }, 
+            "true": {
+                "title": "Editar Lugar de Trabajo",
+                "success": true,
+                "type": "alert",
+                "bg": "alert-primary"
+            }
         },
-         "codigoconfirmado":{
-            "msj": "Código confirmado de manera exitosa.",
-            "success": true,
-            "type": "alert",
-            "bg": "bg-success"
-        },
-        "errorConfirmarCodigo":{
-            "msj": "Error al confirmar el código.",
-            "success": false,
-            "type": "alert",
-            "bg": "bg-warning"
-        },
-        "tiempoExcedidoConfirmarCodigo": {
-            "msj": "Tiempo excedido para confirmar el código.",
-            "success": false,
-            "type": "alert",
-            "bg": "bg-warning"
+        "confirmar": {
+            "alta": {
+                "title": "Confirmar",
+                "msj": "¿Confirma guardar el lugar de trabajo?",
+                "success": true,
+                "type": "alert",
+                "bg": "alert-warning",
+                "btn": "btn-primary"
+            },
+            "cambio": {
+                "title": "Confirmar cambio",
+                "msj": "¿Confirma actualizar el lugar de trabajo?",
+                "success": true,
+                "type": "alert",
+                "bg": "alert-warning",
+                "btn": "btn-warning"
+            },
+            "baja": {
+                "title": "Confirmar baja",
+                "msj": "¿Confirma cancelar el lugar de trabajo?",
+                "success": true,
+                "type": "alert",
+                "bg": "alert-danger",
+                "btn": "btn-danger"
+            }
         }
     }
 }

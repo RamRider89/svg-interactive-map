@@ -105,7 +105,6 @@ export class UsersPosition {
     }
 
     setPosicionEmpleado(data) {
-        //const data = (args.data.response.length > 0) ? args.data.response[0] : null;
         if (data) {
             this.setIdEmpleado(data.idEmpleado);
             this.setNombre(data.nombre);
@@ -115,26 +114,28 @@ export class UsersPosition {
             this.setCentro(data.numeroCentro);
             this.setCorreo(data.empleadoEmaiL);
             this.setTelefono(data.numeroTelefono);
-
-            this.setLider(data.nombre);              // -----
-
+            this.setLider(data.nombre);
             this.setGerente(data.numeroGerente);
             this.setEmpresa(data.numeroEmpresa);
-
-            this.setTipoTrabajo(data.nombre);         // -----   
-
+            this.setTipoTrabajo(data.nombre); 
             this.setCumpleanos(data.fechaNacimiento);
-
-            this.setFotoURL(data.nombre);              // -----
-
-
-
-//            numeroEmpleado: this.numeroEmpleado,
-  //          nombreEmpleado: this.nombreEmpleado,
-
-
+            this.setFotoURL(data.nombre);
         } else {
 
+            this.setIdEmpleado(null);
+            this.setNombre(null);
+            this.setApellidoPaterno(null);
+            this.setApellidoMaterno(null);
+            this.setPuesto(null);
+            this.setCentro(null);
+            this.setCorreo(null);
+            this.setTelefono(null);
+            this.setLider(null);
+            this.setGerente(null);
+            this.setEmpresa(null);
+            this.setTipoTrabajo(null);
+            this.setCumpleanos(null);
+            this.setFotoURL(null);
         }
     }
 

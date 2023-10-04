@@ -23,12 +23,14 @@ export class TiposService {
                 success: function (response) {
                     return (response.meta.status == "SUCCESS") ? response.data.response : null;
                 },
-                error: function (request, status, error) { console.warn(error.responseText); }
+                error: function (request, status, error) {
+                        console.warn(error);
+                    }
                 }).done(function () { }),
             );
         });
 
-        peticion.then((response) => { return 0; }).catch((err) => {console.error(err);});
+        peticion.then((response) => { return 0; }).catch((err) => { console.error(err.responseText); });
         return peticion;
     }
 
@@ -45,12 +47,14 @@ export class TiposService {
                     success: function (response) {
                         (response.meta.status == "SUCCESS") ? response.data.response : null;
                     },
-                    error: function (request, status, error) { console.warn(error.responseText); }
+                    error: function (request, status, error) {
+                        console.warn(error);
+                    }
                 }).done(function () { }),
             );
         });
 
-        peticion.then((response) => { return 0; }).catch((err) => { console.error(err); });
+        peticion.then((response) => { return 0; }).catch((err) => { console.error(err.responseText); });
         return peticion;
     }
 

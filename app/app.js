@@ -174,6 +174,33 @@ function loadFunctionality() {
         $("#Dashboard").addClass('active');
     }
 
+    //ABOUT
+    $(".aboutItem").on("click", function () {
+        showModalAbout();
+    });
+
+
+    // LOAD ASIGNAR || ACTUALIZAR || CANCELAR
+    function showModalAbout() {
+        $.ajax({
+            type: 'GET',
+            url: './assets/modales/modalAbout.html',
+            dataType: 'html',
+            async: true,
+            cache: false,
+            success: (modalHtml) => {
+                $("#modalInformation").html(modalHtml);
+                const modalAbout = new bootstrap.Modal(document.getElementById('modalAbout'), {
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+
+                modalAbout.show();
+            },
+            error: (status, error) => { console.warn(status + ' ' + error.responseText); }
+        }).done(function () { });
+    }
+
 }
 
 function loadFastSearch() {

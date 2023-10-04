@@ -38,12 +38,11 @@ html, body {
         z-index: 11;
     }
 
-    .pasillos{
-        
-    }
+    .pasillos{}
 
     .posicion{
         z-index: 100;
+        cursor: pointer;
     }
 
     .herradura {
@@ -78,21 +77,21 @@ html, body {
        stroke-width: 2;
    }
 
-          .asientoOcupado {
-              display: inline;
-              fill: #d1e0fc;
-              fill-opacity: 1;
-              stroke: #000000;
-              stroke-width: 2;
-          }
-    
-          .respaldoOcupado {
-              display: inline;
-              fill: #9492f5;
-              fill-opacity: 1;
-              stroke: #000000;
-              stroke-width: 2;
-          }
+    .asientoOcupado {
+        display: inline;
+        fill: #a4bbff!important;
+        fill-opacity: 1;
+        stroke: #000000;
+        stroke-width: 2;
+    }
+
+    .respaldoOcupado {
+        display: inline;
+        fill: var(--primary)!important;
+        fill-opacity: 1;
+        stroke: #000000;
+        stroke-width: 2;
+    }
 
    .muros {
        display: inline;
@@ -173,10 +172,16 @@ html, body {
 
    .posicion:hover .asiento,
    .posicion:hover .respaldo {
-       /*fill: rgb(194, 236, 227);*/
        fill: var(--primary);
        transition: fill 0.4s;
    }
+
+   .posicion:hover .asientoOcupado,
+   .posicion:hover .respaldoOcupado {
+       fill: var(--primary)!important;
+       transition: fill 0.4s;
+   }
+
 
    .mesas-cafeteria {
        fill: #8e8e8e;

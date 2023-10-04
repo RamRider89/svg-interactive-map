@@ -11,7 +11,7 @@ export class PositionModel {
         this.setNombreGrupo(null);
         this.setNombrePosicion(null);
         this.setNombreTipo(null);
-        this.setUsuarioAsignado(null);
+        this.setIdEmpleado(null);
 
     }
 
@@ -48,8 +48,8 @@ export class PositionModel {
     getNombreTipo() { return this.nombreTipo; }
     setNombreTipo(nombreTipo) { this.nombreTipo = nombreTipo; }
 
-    getUsuarioAsignado() { return this.usuarioAsignado; }
-    setUsuarioAsignado(usuarioAsignado) { this.usuarioAsignado = usuarioAsignado; }
+    getIdEmpleado() { return this.idEmpleado; }
+    setIdEmpleado(idEmpleado) { this.idEmpleado = idEmpleado; }
 
 
     getPosition() {
@@ -65,7 +65,7 @@ export class PositionModel {
             nombreGrupo: this.nombreGrupo,
             nombrePosicion: this.nombrePosicion,
             nombreTipo: this.nombreTipo,
-            usuarioAsignado: this.usuarioAsignado
+            idEmpleado: this.idEmpleado
         }
 
         return data;
@@ -85,9 +85,21 @@ export class PositionModel {
             this.setNombreGrupo(String(data.nombreGrupo));
             this.setNombrePosicion(String(data.nombrePosicion));
             this.setNombreTipo(String(data.nombreTipo));
-            this.setUsuarioAsignado(parseInt(data.usuarioAsignado));
+            this.setIdEmpleado(parseInt(data.idEmpleado));
         } else {
 
+            this.setID(null);
+            this.setEdificio(null);
+            this.setFechaAsignado(null);
+            this.setAsignado(null);
+            this.setGerenteAsignado(null);
+            this.setGerenteFechaAsignado(null);
+            this.setGrupoAsignado(null);
+            this.setIdGrupo(null);
+            this.setNombreGrupo(null);
+            this.setNombrePosicion(null);
+            this.setNombreTipo(null);
+            this.setIdEmpleado(null);
         }
     }
 

@@ -13,8 +13,12 @@ export class EmpleadoModule {
         this.id = id;
     }
 
-    getEmpleadoCampus() {
-        this.#getEmpleado(this.id);
+    async getEmpleadoCampus() {
+        await this.#getEmpleado(this.id);
+    }
+
+    setEmpleadoExtraDataCampus(lider, tipotrabajo) {
+        this.#setEmpleadoExtraData(this.id, lider, tipotrabajo);
     }
 
     get getEmpleado(){
@@ -35,8 +39,19 @@ export class EmpleadoModule {
         const peticionEmpleado = await this.empleadoService.getEmpleadoData();
         const empleadoData = (peticionEmpleado.data.response.length > 0) ? peticionEmpleado.data.response[0] : null;
 
+        const peticionEmpleadoCampus = await this.empleadoService.getEmpleadoCampus();
+        const empleadoCampusData = (peticionEmpleadoCampus.data.response.length > 0) ? peticionEmpleadoCampus.data.response[0] : null;
+
         // EMPLEADO MODEL
         this.Empleado.setEmpleado(empleadoData);
+        if (empleadoCampusData) {
+            this.Empleado.setNumeroLider(empleadoCampusData.lider);
+            this.Empleado.setTipoTrabajo(empleadoCampusData.tipoTrabajo);
+        }else{
+            this.Empleado.setNumeroLider(0);
+            this.Empleado.setTipoTrabajo(0);
+        }
+
         this.#setProgresBarLoad('#progresBar', 60);
 
         // GET EMAIL
@@ -47,8 +62,19 @@ export class EmpleadoModule {
         this.Empleado.setEmpleadoEmaiL(empleadoEmail);
         this.#setProgresBarLoad('#progresBar', 80);
 
+        // GET LIDERES 
+        await this.#getLideresCentro(this.Empleado.numeroCentro);
+
         this.loadEmpleadoData(this.Empleado, contactoData);
 
+        //return this.Empleado.getIdEmpleado();
+    }
+
+    // SET EMPLEADO EXTRA DATA
+    #setEmpleadoExtraData(idEmpleado, lider, tipotrabajo) {
+        // EMPLEADO MODEL
+        this.Empleado.setNumeroLider(lider);
+        this.Empleado.setTipoTrabajo(tipotrabajo);
     }
 
     loadEmpleadoData(employee, contacto) {
@@ -57,7 +83,8 @@ export class EmpleadoModule {
             $("#infoEmpresa").text(employee.nombreEmpresa);
             $("#infoCentro").text(employee.numeroCentro);
             $("#infoCentroName").text(employee.nombreCentro);
-            $("#infoEmpleadoNombre").text(employee.nombreEmpleado);
+            $("#infoEmpleadoNumero").text(employee.numeroEmpleado);
+            $("#infoEmpleadoNombre").text(employee.nombreCompleto);
             $("#infoEmpleadoPuesto").text(employee.nombrePuesto);
             $("#infoEmpleadoEmail").text(employee.empleadoEmaiL);
             $("#infoEmpleadoTelefono").text(employee.numeroTelefono);
@@ -65,14 +92,12 @@ export class EmpleadoModule {
             $("#infoEmpleadoNomGerente").text(employee.nombreGerente);
             $("#infoEmpleadoNumGerente").text(employee.numeroGerente);
 
-            // GET LIDERES 
-            this.#getLideresCentro(employee.numeroCentro);
+            (employee.numeroEmpleado > 0) ? $("#idEmpleado").val(employee.numeroEmpleado) : false;
+            (employee.numeroLider > 0) ? $("#idLiderTrabajo").val(employee.numeroLider) : false;
+            (employee.tipoTrabajo > 0) ? $("#infoTipoTrabajo").val(employee.tipoTrabajo) : false;
+
 
             this.#saveDataEmployee(employee, contacto);
-
-            // // $("#idLider")
-            // loadAsignarLugar(employee);
-
         } else {
             console.warn('El empleado no existe');
             this.#resetModalInfoEmpleado();

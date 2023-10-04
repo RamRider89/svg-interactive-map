@@ -118,7 +118,7 @@ export class EmpleadoModel {
 
     setEmpleado(data) {
 
-        if (!data) { return 0;}
+        if (data) {
 
             this.setIdEmpleado(String(data.NumeroEmpleado).trim());
             this.setNumeroEmpresa(String(data.Empresa).trim());
@@ -137,6 +137,26 @@ export class EmpleadoModel {
             this.setFechaCumpleanos(this.#getBirthday(String(data.FechaNacimiento).trim()));
             this.setNombreGerente(this.#namesToTitleCase(data.NombreGerente, data.ApellidoPaternoGerente, data.ApellidoMaternoGerente));
             this.setNumeroGerente(String(data.NumeroGerente).trim());
+        }else{
+            
+            this.setIdEmpleado(null);
+            this.setNumeroEmpresa(null);
+            this.setNombreEmpresa(null);
+            this.setNumeroCentro(null);
+            this.setNombreCentro(null);
+            this.setNumeroEmpleado(null);
+            this.setNombre(null);
+            this.setApellidoPaterno(null);
+            this.setApellidoMaterno(null);
+            this.setNombreCompleto(null);
+            this.setNumeroPuesto(null);
+            this.setNombrePuesto(null);
+            this.setNumeroTelefono(null);
+            this.setFechaNacimiento(null);
+            this.setFechaCumpleanos(null);
+            this.setNombreGerente(null);
+            this.setNumeroGerente(null);
+        }
     }
 
     setEmpleadoComplementos(data) {

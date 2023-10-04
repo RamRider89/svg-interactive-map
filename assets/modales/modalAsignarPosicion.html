@@ -2,7 +2,7 @@
 <div class="modal fade" id="modalAsignarPosicion" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalAsignarPosicionLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header alert-dark">
+      <div class="modal-header">
         <span class="modal-title" id="modalAsignarPosicionLabel">Asignar Lugar de Trabajo</span>
         <button type="button" class="btn-close btn btn-sm" data-bs-dismiss="modal">
           <i class="bi bi-x-circle-fill"></i>
@@ -13,19 +13,15 @@
           <div class="row g-1">
             <div id="LugarTrabajoInfo" class="col-md-5 col-lg-5 order-md-last">
 
-              <!-- <h5 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-secondary">Lugar de Trabajo</span>
-              </h5> -->
-
               <div class="card">
-                <!-- <div class="card-header" id="LugarTrabajoCard">
+                <div class="card-header" id="LugarTrabajoCard">
                   <h5 class="mb-0">
-                    <button class="btn btn-sm btn-light w-100" data-bs-toggle="collapse" data-bs-target="#collapseLugarTrabajo" aria-expanded="true" 
+                    <button type="button" class="btn btn-sm btn-light w-100" data-bs-toggle="collapse" data-bs-target="#collapseLugarTrabajo" aria-expanded="true" 
                     aria-controls="collapseLugarTrabajo">
                       Lugar de Trabajo
                     </button>
                   </h5>
-                </div> -->
+                </div>
               
                 <div id="collapseLugarTrabajo" class="collapse show" aria-labelledby="LugarTrabajoCard" data-bs-parent="#LugarTrabajoInfo">
                   <div class="card-body">
@@ -80,24 +76,23 @@
             </div>
         
             <div id="EmpleadoInfo" class="col-md-7 col-lg-7">
-              <!-- <h5 class="mb-3">Información de Empleado</h5> -->
 
               <div class="card">
-                <!-- <div class="card-header" id="EmpleadoCard">
+                <div class="card-header" id="EmpleadoCard">
                   <h5 class="mb-0">
-                    <button class="btn btn-sm btn-light w-100" data-bs-toggle="collapse" data-bs-target="#collapseEmpleado"
+                    <button type="button" class="btn btn-sm btn-light w-100" data-bs-toggle="collapse" data-bs-target="#collapseEmpleado"
                       aria-expanded="true" aria-controls="collapseEmpleado">
                       Información de Empleado
                     </button>
                   </h5>
-                </div> -->
+                </div>
 
                 <div id="collapseEmpleado" class="collapse show" aria-labelledby="EmpleadoCard"
                   data-bs-parent="#EmpleadoInfo">
                   <div class="card-body">
 
                       <div class="row g-3">
-                        <div class="col-md-12">
+                        <div class="col-md-12 visibleSinAsignar">
                           <label for="idEmpleado" class="form-label">No. Empleado:</label>
                           <div class="input-group input-group-sm has-validation">
                             <span class="input-group-text">#</span>
@@ -116,9 +111,18 @@
                         </div> -->
               
                         <ul class="list-group">
+                          
+
                           <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div><h6 class="my-0">Nombre:</h6></div>
                             <span id="infoEmpleadoNombre" class="text-body-dark empleadoData">--</span>
+                          </li>
+
+                          <li class="list-group-item d-flex justify-content-between lh-sm visibleAsignado">
+                            <div>
+                              <h6 class="my-0">Número Empleado:</h6>
+                            </div>
+                            <span id="infoEmpleadoNumero" class="text-body-dark empleadoData">--</span>
                           </li>
               
                           <li class="list-group-item d-flex justify-content-between lh-sm">
@@ -178,8 +182,11 @@
         </div>
         <div class="modal-footer justify-content-center">
           <hr class="my-2">
-          <button id="btnAsignarLugar" class="w-50 btn btn-sm btn-primary btn-lg" type="submit">
-            <i class="fa fa-user"></i> Asignar Lugar</button>
+          <button id="btnCancelarLugar" class="w-25 btn btn-sm btn-warning btn-lg visibleAsignado" type="button">
+            <i class="fa fa-user-minus"></i> Dar de Baja</button>
+
+          <button id="btnAsignarLugar" class="w-25 btn btn-sm btn-primary btn-lg" type="submit">
+            <i class="fa fa-user-check"></i> Guardar Lugar</button>
         </div>
       </form>
     </div>
@@ -188,15 +195,14 @@
 
 <div id="modalConfirmarPosition">
   <!-- Modal -->
-  <div class="modal fade" id="modalConfirmar" tabindex="-1" role="dialog" aria-labelledby="modalConfirmarLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="modalConfirmar" data-bs-backdrop="static" tabindex="1" role="dialog" aria-labelledby="modalConfirmarLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content shadow-modal">
         <div class="modal-header">
-          <h6 class="modal-title" id="modalConfirmarLabel">Confirmar</h6>
+          <h6 class="modal-title" id="modalConfirmarLabel"></h6>
         </div>
         <div class="modal-body">
-          <p class="alert alert-warning">¿Confirma guardar los cambios?</p>
+          <p id="msjConfirmarModal" class="alert"></p>
 
           <div id="CodigoConfirmacionInfo" class="row hidden">
 
@@ -238,8 +244,8 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-secondary btn-cancelar" data-bs-dismiss="modal">Cancelar</button>
-          <button id="btn-confirmar-position" type="button" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Confirmar</button>
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button id="btn-confirmar-position" type="button" class="btn btn-sm"><i class="fa fa-check"></i> Confirmar</button>
         </div>
       </div>
     </div>

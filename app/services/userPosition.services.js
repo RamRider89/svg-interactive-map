@@ -52,13 +52,13 @@ export class UserPositionService {
                         return (response.meta.status == "SUCCESS") ? response.data.response : null;
                     },
                     error: function (request, status, error) {
-                        console.warn(error.responseText);
+                        console.warn(error);
                     }
                 }).done(function () { }),
             );
         });
 
-        peticion.then((response) => { return 0; }).catch((err) => { console.error(err); });
+        peticion.then((response) => { return 0; }).catch((err) => { console.error(err.responseText); });
         return peticion;
     }
 
@@ -77,13 +77,13 @@ export class UserPositionService {
                         return (response.meta.status == "SUCCESS") ? response.data.response : null;
                     },
                     error: function (request, status, error) {
-                        console.warn(error.responseText);
+                        console.warn(error);
                     }
                 }).done(function () { }),
             );
         });
 
-        peticion.then((response) => { return 0; }).catch((err) => { console.error(err); });
+        peticion.then((response) => { return 0; }).catch((err) => { console.error(err.responseText); });
         return peticion;
     }
 
@@ -114,13 +114,13 @@ export class UserPositionService {
                         return (response.meta.status == "SUCCESS") ? response.data.response : null;
                     },
                     error: function (request, status, error) {
-                        console.warn(error.responseText);
+                        console.warn(error);
                     }
                 }).done(function () { }),
             );
         });
 
-        peticion.then((response) => { return 0; }).catch((err) => { console.error(err); });
+        peticion.then((response) => { return 0; }).catch((err) => { console.error(err.responseText); });
         return peticion;
     }
 

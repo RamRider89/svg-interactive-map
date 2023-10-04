@@ -1,4 +1,5 @@
 import { URL_API_CAMPUS, URL_CAMPUS } from '../../environments/config.env.js';
+
 export class PositionService {
     constructor() { 
         this.position = null;
@@ -31,12 +32,24 @@ export class PositionService {
         return this.#getPosition(this.id);
     }
 
+    getAllPositions(status){
+        return this.#getAllPositions(status);
+    }
+
     setCodigoConfirmacion() {
         return this.#setCodigoConfirmacion(this.id);
     }
 
-    setPositionAsignada() {
-        return this.#setPosition(this.id);
+    setEmailConfirmacion(args) {
+        return this.#setEmailConfirmacion(args);
+    }
+
+    setPositionAsignada(mov) {
+        return this.#setPosition(this.id, mov);
+    }
+
+    setUserPosition(employee) {
+        return this.#setUserPosition(employee);
     }
 
     async #getPositionByName(position) {
@@ -56,13 +69,13 @@ export class PositionService {
                         return (response.meta.status == "SUCCESS") ? response.data.response : null;
                     },
                     error: function (request, status, error) {
-                        console.warn(error.responseText);
+                        console.warn(error);
                     }
                 }).done(function () { }),
             );
         });
 
-        peticion.then((response) => { return 0; }).catch((err) => { console.error(err); });
+        peticion.then((response) => { return 0; }).catch((err) => { console.error(err.responseText); });
         return peticion;
     }
 
@@ -81,15 +94,41 @@ export class PositionService {
                         return (response.meta.status == "SUCCESS") ? response.data.response : null;
                     },
                     error: function (request, status, error) {
-                        console.warn(error.responseText);
+                        console.warn(error);
                     }
                 }).done(function () { }),
             );
         });
 
-        peticion.then((response) => { return 0; }).catch((err) => { console.error(err); });
+        peticion.then((response) => { return 0; }).catch((err) => { console.error(err.responseText); });
         return peticion;
     }
+
+    async #getAllPositions(status) {
+        const peticion = new Promise((resolve) => {
+            resolve(
+                // OBTENER LA INFORMACION DE LAS POSICIONES
+                $.ajax({
+                    type: 'POST',
+                    url: URL_API_CAMPUS + 'api/getposiciones/',
+                    dataType: 'json',
+                    data: JSON.stringify(status),
+                    async: true,
+                    beforeSend: function () { },
+                    success: function (response) {
+                        return (response.meta.status == "SUCCESS") ? response.data.response : null;
+                    },
+                    error: function (request, status, error) {
+                        console.warn(error);
+                    }
+                }).done(function () { }),
+            );
+        });
+
+        peticion.then((response) => { return 0; }).catch((err) => { console.error(err.responseText); });
+        return peticion;
+    }
+
 
     async #setCodigoConfirmacion(id) {
         const data = {
@@ -128,8 +167,35 @@ export class PositionService {
         return peticion;
     }
 
-    async #setPosition(id) {
+    async #setEmailConfirmacion(data) {
+
+        const peticion = new Promise((resolve) => {
+            resolve(
+                // ENVIAR EMAIL DE CONFIRMACION
+                $.ajax({
+                    type: 'POST',
+                    url: URL_API_CAMPUS + 'api/emailconfirmacion/',
+                    dataType: 'json',
+                    data: JSON.stringify(data),
+                    async: true,
+                    beforeSend: function () { },
+                    success: function (response) {
+                        return (response.meta.status == "SUCCESS") ? response.data.response : null;
+                    },
+                    error: function (request, status, error) {
+                        console.warn(error.responseText);
+                    }
+                }).done(function () { }),
+            );
+        });
+
+        peticion.then((response) => { return response; }).catch((err) => { console.error(err); });
+        return peticion;
+    }
+
+    async #setPosition(id, mov) {
         const data = {
+            TIPO_MOV: mov,
             idPosition: id,
             idEmpleado: this.idEmpleado
         };
@@ -148,13 +214,39 @@ export class PositionService {
                         return (response.meta.status == "SUCCESS") ? response.data.response : null;
                     },
                     error: function (request, status, error) {
-                        console.warn(error.responseText);
+                        console.warn(error);
                     }
                 }).done(function () { }),
             );
         });
 
-        peticion.then((response) => { return 0; }).catch((err) => { console.error(err); });
+        peticion.then((response) => { return 0; }).catch((err) => { console.error(err.responseText); });
+        return peticion;
+    }
+
+    // relacionar posicion con datos de usuario
+    async #setUserPosition(employee) {
+        const peticion = new Promise((resolve) => {
+            resolve(
+                // ASIGNANDO LA POSICION
+                $.ajax({
+                    type: 'POST',
+                    url: URL_API_CAMPUS + 'api/setuserposition/',
+                    dataType: 'json',
+                    data: JSON.stringify(employee),
+                    async: true,
+                    beforeSend: function () { },
+                    success: function (response) {
+                        return (response.meta.status == "SUCCESS") ? response.data.response : null;
+                    },
+                    error: function (request, status, error) {
+                        console.warn(error);
+                    }
+                }).done(function () { }),
+            );
+        });
+
+        peticion.then((response) => { return 0; }).catch((err) => { console.error(err.responseText); });
         return peticion;
     }
 

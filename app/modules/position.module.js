@@ -12,9 +12,9 @@ export class PositionModule {
         this.empleadoModule = new EmpleadoModule();
         this.notificationCenter = new NotificationModule();
         this.timerValidateCodigo = null; // timerGlobal
-        this.bodyToaster = null;
-        this.backgroundToaster = null;
-
+        this.modalAsignar = null;
+        this.modalEditar = null;
+        this.showConsoleMessage = (success, msj) => { (success) ? console.log(msj) : console.warn(msj); }
     }
     
     async setCampusPosition(id) {
@@ -36,14 +36,16 @@ export class PositionModule {
         this.Position.showInformation();
 
         if (this.Position) {
-            (this.Position.asignado) ? 0 : this.showModalAsignarPosicion();
+            this.showModalAsignarPosicion(this.Position.asignado);
         } else {
             console.warn(MESSAGES_LIST.position.errorCargarInfo.msj);
         }
     }
 
-    // LOAD ASIGNAR O CAMBIAR
-    showModalAsignarPosicion() {
+    // LOAD ASIGNAR || ACTUALIZAR || CANCELAR
+    showModalAsignarPosicion(asignado) {
+        const idEmpleado = this.Position.idEmpleado;
+
         $.ajax({
             type: 'GET',
             url: './assets/modales/modalAsignarPosicion.html',
@@ -52,12 +54,19 @@ export class PositionModule {
             cache: false,
             success: (modalHtml) => {
                 $("#modalInformation").html(modalHtml);
-                const modalAsignar = new bootstrap.Modal(document.getElementById('modalAsignarPosicion'), {
+                const formBusqueda = document.querySelector('#formAsignarLugar');
+                this.modalAsignar = new bootstrap.Modal(document.getElementById('modalAsignarPosicion'), {
                     keyboard: false,
                     backdrop: 'static'
                 });
 
                 const tiposTrabajo = JSON.parse(localStorage.getItem('TIPOSTRABAJO'));
+
+                formBusqueda.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }, false);
+                
                 tiposTrabajo.forEach((item) => {
                     $("#infoTipoTrabajo").append($('<option>', {
                         value: item.id,
@@ -68,11 +77,25 @@ export class PositionModule {
                 this.#loadGrupoData(this.Position);
                 this.#loadValidateEvents();
 
-                modalAsignar.show();
+                if (idEmpleado > 0 && asignado) { 
+                    this.#loadEmpleadoAsignado(idEmpleado);
+                    $('.visibleSinAsignar').addClass('hidden');
+                }else {
+                    $('.visibleAsignado').addClass('hidden');
+                }
+                $('#modalAsignarPosicion > div > div > div.modal-header').addClass(MESSAGES_LIST.modal.alta[asignado].bg);
+                $('#modalAsignarPosicionLabel').text(MESSAGES_LIST.modal.alta[asignado].title);
+
+                this.modalAsignar.show();
             },
             error: (status, error) => { console.warn(status + ' ' + error.responseText); }
         }).done(function () { });
     }
+
+    #loadEmpleadoAsignado(idEmpleado) {
+        (idEmpleado > 0) ? this.#getEmpleado(idEmpleado) : console.warn(MESSAGES_LIST.empleado.idIncorrecto.msj);
+    }
+
 
     #loadGrupoData(Position) {
         if (Position.id) {
@@ -85,120 +108,98 @@ export class PositionModule {
         }
     }
 
-    #getEmpleado(id){
+    async #getEmpleado(id){
         this.empleadoModule.setEmpleadoCampus(id);
-        this.empleadoModule.getEmpleadoCampus();
+        await this.empleadoModule.getEmpleadoCampus();
         const employee = this.empleadoModule.getEmpleado;
-        this.#loadAsignarLugar(employee, this.Position);
+        const Pos = this.Position;
+        console.log(employee);
+        if (!employee.idEmpleado) {
+            this.resetSearchEmployee('noExiste');
+            return 0;
+        }
+        if (!employee.empleadoEmaiL) {
+            this.resetSearchEmployee('noExisteEmail');
+        }
+
+        // Bootstrap validation styles to
+        const formBusqueda = document.querySelector('#formAsignarLugar');
+        formBusqueda.addEventListener('submit', function (event) {
+            formBusqueda.classList.add('was-validated');
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (!Pos.id) {
+                console.warn(MESSAGES_LIST.position.errorCargarInfo.msj);
+                return 0;
+            } else if (!formBusqueda.checkValidity()) {
+                console.warn(MESSAGES_LIST.position.camposIncompletos.msj);
+                return 0;
+            } else {
+                formConstrols(employee, Pos, false);
+            }
+        });
+
+        const formConstrols = (Employee, Position, MOV) => {
+            (!Employee) ? console.warn("Error en datos de empleado") : this.#loadAsignarLugar(Employee, Position, MOV);
+        }
+
+        const btnCancelarPosition = document.getElementById("btnCancelarLugar");
+        const loadCancelarPosition = () => { formConstrols(employee, Pos, true) };
+
+        (employee.idEmpleado > 0 && Pos.asignado) ? btnCancelarPosition.addEventListener("click", loadCancelarPosition, false) : btnCancelarPosition.removeEventListener("click", loadCancelarPosition, false);
     }
 
-    async #loadAsignarLugar(Employee, Position){
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function () {
-            'use strict'
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const form = document.querySelector('#formAsignarLugar');
+    resetSearchEmployee(action){
+        // notification
+        let data = {
+            success: false,
+            message: MESSAGES_LIST.empleado[action].msj,
+            bg: MESSAGES_LIST.empleado[action].bg
+        };
+        this.#notificationCenter(data);
+    }
+    
+    async #loadAsignarLugar(Employee, Position, CANCEL_POS){
+        'use strict';
 
-            form.addEventListener('submit', function (event) {
-                form.classList.add('was-validated');
-
-                if (!form.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    console.warn(MESSAGES_LIST.position.camposIncompletos.msj);
-                    return;
-                } else {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    console.log("FORM OK");
-                    confirmModal();
-
-                    //(confirmar) ? console.log("guardar") : console.log("cencelo");
-                }
-            }, false);
-        })();
+        if (!Employee.empleadoEmaiL) {
+            this.resetSearchEmployee('noExisteEmail');
+            return 0;
+        }
 
         const btnConfirmar = document.getElementById("btn-confirmar-position");
-
-        const confirmModal = async () => {
-            resetTimerVerification();
-            $('#modalConfirmar').modal('show');
-        }
+        const modalConfirmar = new bootstrap.Modal(document.getElementById('modalConfirmar'), {
+            keyboard: false,
+            backdrop: 'static'
+        });
 
         // enviar codigo al email
         const enviarCodigoEmail = async () => {
             this.#showButtonLoading('#btn-confirmar-position');
             const codigo = await confirmarPosicion('REGISTRAR', Employee, Position);
             console.log(codigo);
-
-            if (Boolean(parseInt(codigo.consulta[0].CONSULTA)) && Boolean(parseInt(codigo.consulta[0].REGISTRADO))) {
+            // convertQueryJSON
+            const response = convertQueryJSON(codigo, 'consulta');
+            if (response.CONSULTA && response.REGISTRADO) {
                 // codigo registrado  
                 // togle visual user
                 toogleConfirmMessages(true);    // mostrar inputs codigo
                 resetButtonPosition();
-
                 // 15 minutos para verificar
                 timerVerification();
                 btnConfirmar.removeEventListener("click", enviarCodigoEmail, false);
                 btnConfirmar.addEventListener("click", confirmarCodigoEmail, false);
-
-                this.bodyToaster = MESSAGES_LIST.codigo.codigoEnviado.msj;
-                this.backgroundToaster = MESSAGES_LIST.codigo.codigoEnviado.bg;
-
-            } else {
-                // error
-                console.warn("Error al generar el código");
-                this.bodyToaster = MESSAGES_LIST.codigo.errorGenerarCodigo.msj;
-                this.backgroundToaster = MESSAGES_LIST.codigo.errorGenerarCodigo.bg;
             }
 
             // notification
             let data = {
-                message: this.bodyToaster,
-                bg: this.backgroundToaster
+                success: response.REGISTRADO,
+                message: MESSAGES_LIST.codigo.enviado[response.REGISTRADO].msj,
+                bg: MESSAGES_LIST.codigo.enviado[response.REGISTRADO].bg
             };
-            this.#generateToast(data);
+            this.#notificationCenter(data);
             resetButtonPosition();
-        }
-
-        // confirmar codigo recibido
-        const confirmarCodigoEmail = async () => {
-
-            this.#showButtonLoading('#btn-confirmar-position');
-            const confirmar = await confirmarPosicion('CONFIRMAR', Employee, Position);
-            console.log(confirmar);
-            resetButtonPosition();
-            if (confirmar) {
-                if (Boolean(parseInt(confirmar.consulta[0].CONSULTA)) && Boolean(parseInt(confirmar.consulta[0].CONFIRMADO))) {
-
-                    // CODIGO CONFIRMADO
-                    this.bodyToaster = MESSAGES_LIST.codigo.codigoconfirmado.msj;
-                    this.backgroundToaster = MESSAGES_LIST.codigo.codigoconfirmado.bg;
-                    console.log(MESSAGES_LIST.codigo.codigoconfirmado.msj);
-
-                    // GUARDANDO EL LUGAR
-                    loadAsignarLugarTrabajo();
-
-                    // HIDE MODAL
-                    toogleConfirmMessages(false);
-                    $('#modalConfirmar').modal('hide');
-
-                } else {
-                    console.warn(MESSAGES_LIST.codigo.errorConfirmarCodigo.msj);
-
-                    this.bodyToaster = MESSAGES_LIST.codigo.errorConfirmarCodigo.msj;
-                    this.backgroundToaster = MESSAGES_LIST.codigo.errorConfirmarCodigo.bg;
-                }
-            }else {
-                return 0;
-            }
-
-            // notification
-            let data = {
-                message: this.bodyToaster,
-                bg: this.backgroundToaster
-            };
-            this.#generateToast(data);
         }
 
         // confirmar posicion
@@ -211,7 +212,9 @@ export class PositionModule {
                 console.log(code);
             }
 
-            if (TIPO_QUERY === 'CONFIRMAR' && !code){ return 0;}
+            if (TIPO_QUERY === 'CONFIRMAR' && !code) { return 0; }
+
+            const tipoMovimiento = ['A', 'B', 'C'];
 
             const data = {
                 TIPO_QUERY: TIPO_QUERY,
@@ -219,10 +222,12 @@ export class PositionModule {
                 emailEmpleado: Employee.empleadoEmaiL,
                 idCentro: Employee.numeroCentro,
                 idPosition: Position.id,
-                tipoMovimiento: "A",
+                tipoMovimiento: tipoMovimiento[+ Position.asignado + CANCEL_POS],
                 idPositionNew: 0,
                 codigo: code
             };
+
+            console.log(data);
 
             this.positionService.setPosition(parseInt(Position.id));
             this.positionService.genNewCode(data);
@@ -230,46 +235,122 @@ export class PositionModule {
             return (peticionCodigo.data.response) ? peticionCodigo.data.response : null;
         }
 
+        // confirmar codigo recibido
+        const confirmarCodigoEmail = async () => {
+
+            this.#showButtonLoading('#btn-confirmar-position');
+            const confirmar = await confirmarPosicion('CONFIRMAR', Employee, Position);
+            console.log(confirmar);
+            resetButtonPosition();
+
+            if (!confirmar) { return 0;}
+            
+            // convertQueryJSON
+            const response = convertQueryJSON(confirmar, 'consulta');
+            if (response.CONSULTA && response.CONFIRMADO) {
+                // GUARDANDO EL LUGAR
+                loadAsignarLugarTrabajo();
+                // HIDE MODAL
+                resetTimerVerification();
+                //employeeExtraData(false);
+                $('#modalConfirmar').modal('hide');
+            }
+            // notification
+            let data = {
+                success: response.CONFIRMADO,
+                message: MESSAGES_LIST.codigo.confirmado[response.CONFIRMADO].msj,
+                bg: MESSAGES_LIST.codigo.confirmado[response.CONFIRMADO].bg
+            };
+            this.#notificationCenter(data);
+        }
+
         // GUARDANDO EL LUGAR
         const asignarPosition = async () => {
-            const asignarPosicion = await this.positionService.setPositionAsignada();
+            const tipoMovimiento = [1, 1, 0];
+            const mov = parseInt(tipoMovimiento[+ Position.asignado + CANCEL_POS]);
+            const asignarPosicion = await this.positionService.setPositionAsignada(mov);// opuesto al booleano
             return (asignarPosicion.data.response) ? asignarPosicion.data.response : null;
         }
 
         // RELACIONANDO EL USUARIO CON EL LUGAR
-        const asignarUserPosition = async () => {
-            const asignarUserPosicion = await this.positionService.setPositionAsignada();
+        const asignarUserPosition = async (employee) => {
+            const asignarUserPosicion = await this.positionService.setUserPosition(employee);
             return (asignarUserPosicion.data.response) ? asignarUserPosicion.data.response : null;
         }
 
         const loadAsignarLugarTrabajo = async () => {
-            // completando datos del empleado
-            // ENVIAR PARAMETROS QUE FALTAN
-
-
             const asignar = await asignarPosition();
-            const consulta = Boolean(parseInt(asignar.setPosicion[0].ASIGNADO));
+            const response = convertQueryJSON(asignar, 'setPosicion');
+            const type = [false, true, 'cancel'];
+            const mov = type[+ response.ASIGNADO + CANCEL_POS]
 
             // notification
             let data = {
-                message: MESSAGES_LIST.position.positionAsignada[consulta].msj,
-                bg: MESSAGES_LIST.position.positionAsignada[consulta].bg
+                success: response.ASIGNADO,
+                message: MESSAGES_LIST.position.positionAsignada[mov].msj,
+                bg: MESSAGES_LIST.position.positionAsignada[mov].bg
             };
-            this.#generateToast(data);
+            this.#notificationCenter(data);
 
-            (consulta) ? loadRelacionarUsuarioPosicion(asignar) : 0;
+            if (CANCEL_POS) { loadAsignacionFinal(true); return 0; }
+            else if (response.ASIGNADO) { loadRelacionarUsuarioPosicion(response); }
         }
 
-        const loadRelacionarUsuarioPosicion = async (response) => {
-            // const relacionar = await asignarUserPosition();
-            // const consulta = Boolean(parseInt(relacionar.setPosicion[0].ASIGNADO));
+        const loadRelacionarUsuarioPosicion = async (status) => {
 
-            // // notification
-            // let data = {
-            //     message: MESSAGES_LIST.position.positionAsignada[consulta].msj,
-            //     bg: MESSAGES_LIST.position.positionAsignada[consulta].bg
-            // };
-            // this.#generateToast(data);
+            const employee = this.empleadoModule.getEmpleado;
+            const relacionar = await asignarUserPosition(employee);
+            const response = convertQueryJSON(relacionar, 'setUserPosition');
+
+            //let response = { ASIGNADO : true};
+            // notification
+            let data = {
+                success: response.ASIGNADO,
+                message: MESSAGES_LIST.position.userPositionAsignada[response.ASIGNADO].msj,
+                bg: MESSAGES_LIST.position.userPositionAsignada[response.ASIGNADO].bg
+            };
+            this.#notificationCenter(data);
+
+            (response.ASIGNADO) ? loadAsignacionFinal(response) : 0;
+        }
+
+        const loadAsignacionFinal = (status) => {
+            modalConfirmar.hide();
+            this.modalAsignar.hide();
+            console.log(status);
+
+            setColorPosition(Position.getNombrePosicion());
+            sendNotificationUserAsignado(status);
+        }
+
+        const setColorPosition = (pos) => {
+            if (CANCEL_POS) {
+                $("#" + pos + " > .asiento").removeClass('asientoOcupado');
+                $("#" + pos + " > .respaldo").removeClass('respaldoOcupado');
+            }else {
+                $("#" + pos + " > .asiento").addClass('asientoOcupado');
+                $("#" + pos + " > .respaldo").addClass('respaldoOcupado');
+            }
+        }
+
+        const sendNotificationUserAsignado = async (status) => {
+            const employee = this.empleadoModule.getEmpleado;
+
+            const asunto = MESSAGES_LIST.position.userPositionConfirmar[CANCEL_POS].asunto;
+            let body = MESSAGES_LIST.position.userPositionConfirmar[CANCEL_POS].msj;
+            const mensaje = body.replace('%NOMBRE%', employee.getNombreCompleto());
+
+            let extra = MESSAGES_LIST.position.userPositionConfirmar[CANCEL_POS].adicional;
+            const adicional = extra.replace('%POSITION%', Position.getNombrePosicion()).replace('%GRUPO% ', Position.getNombreGrupo()).replace('%EDIFICIO% ', Position.getEdificio());
+
+            const data = {
+                asunto: asunto,
+                mensaje: mensaje,
+                mensajeAdicional: adicional,
+                emailEmpleado: employee.getEmpleadoEmaiL()
+            };
+
+            (status) ? await this.positionService.setEmailConfirmacion(data) : false;
         }
 
         // timer 15 minutos para verificar
@@ -284,20 +365,20 @@ export class PositionModule {
                 now = new Date();
                 minutosCorriendo = Math.floor(((now - dateInicio) % (1000 * 60 * 60)) / (1000 * 60));
                 segundosCorriendo = Math.floor(((now - dateInicio) % ((1000 * 60)) / 1000));
-                minutosRestantes = 1 - minutosCorriendo;
+                minutosRestantes = 14 - minutosCorriendo;
                 segundosRestantes = 60 - segundosCorriendo;
 
                 $("#minutosRestantes").text(minutosRestantes);
                 $("#secondsRestantes").text(segundosRestantes);
-                if (minutosCorriendo >= 2 && segundosCorriendo >= 0) {
+                if (minutosCorriendo >= 15 && segundosCorriendo >= 0) {
                     
                     // notification
                     let data = {
-                        message: MESSAGES_LIST.codigo.tiempoExcedidoConfirmarCodigo.msj,
-                        bg: MESSAGES_LIST.codigo.tiempoExcedidoConfirmarCodigo.bg
+                        message: MESSAGES_LIST.codigo.confirmado['tiempoExcedido'].msj,
+                        bg: MESSAGES_LIST.codigo.confirmado['tiempoExcedido'].bg
                     };
-                    this.#generateToast(data);
-                    console.warn(MESSAGES_LIST.codigo.tiempoExcedidoConfirmarCodigo.msj);
+                    this.#notificationCenter(data);
+                    console.warn(MESSAGES_LIST.codigo.confirmado['tiempoExcedido'].msj);
 
                     resetTimerVerification();
                     return;
@@ -331,6 +412,54 @@ export class PositionModule {
             }
         }
 
+        // SCRIPT para recorrer el resultado de un query y obtener los datos booleanos
+        const convertQueryJSON = (response, consulta) => {
+            let result = [];
+            let row = new Object();
+            $.each(response[consulta][0], function (rowName, rowValue) {
+                row[rowName] = convertStrtoBool(rowValue);
+            });
+            result.push(row);
+            return Object.freeze(row);
+        }
+
+        // convert bool values
+        const convertStrtoBool = (response) => { return Boolean(parseInt(response)); }
+        const convertInttoBool = (response) => { return Boolean(response); }
+
+        const employeeExtraData = (action) => {
+            $("#idEmpleado").prop("disabled", action);
+            $("#idLiderTrabajo").prop("disabled", action);
+            $("#infoTipoTrabajo").prop("disabled", action);
+
+            const lider = (action) ? $("#idLiderTrabajo").val() : null;
+            const tipotrabajo = (action) ? $("#infoTipoTrabajo").val() : null;
+            this.empleadoModule.setEmpleadoExtraDataCampus(lider, tipotrabajo);
+        }
+
+        const confirmModal = async () => {
+            // alta || cambio || baja
+            const type = ["alta", "cambio", "baja"];
+            let mov = type[+ Position.asignado + CANCEL_POS];
+
+            $("#modalConfirmarLabel").text(MESSAGES_LIST.modal.confirmar[mov].title);
+            $("#msjConfirmarModal").addClass(MESSAGES_LIST.modal.confirmar[mov].bg);
+            $("#msjConfirmarModal").text(MESSAGES_LIST.modal.confirmar[mov].msj);
+            $("#btn-confirmar-position").addClass(MESSAGES_LIST.modal.confirmar[mov].btn);
+
+            employeeExtraData(true);
+            resetTimerVerification();
+            modalConfirmar.show();
+
+            $('#modalConfirmar').on('hidden.bs.modal', function (e) {
+                employeeExtraData(false);
+                $("#modalConfirmarLabel").text('');
+                $("#msjConfirmarModal").removeClass().addClass('alert');
+                $("#msjConfirmarModal").text('');
+                $("#btn-confirmar-position").removeClass().addClass('btn btn-sm');
+            });
+        }
+        confirmModal();
     }
 
 
@@ -428,7 +557,7 @@ export class PositionModule {
         $(button).html('<span class="spinner-border spinner-border-sm"></span> Cargando...');
     }
 
-    #generateToast(data){
+    #notificationCenter(data){
         let idToaster;
         idToaster = 'toast' + Math.floor(Math.random() * 1000);
         // notification
@@ -437,9 +566,9 @@ export class PositionModule {
             title: 'Notificación',
             message: data.message,
             background: data.bg,
-            animation: false,
+            animation: true,
             autohide: true,
-            delay: 4000
+            delay: 5000
         }
         this.notificationCenter.setNewToast(args);
         const toast = this.notificationCenter.getToast;
@@ -452,6 +581,9 @@ export class PositionModule {
         });
 
         $('#' + idToaster).toast('show');
+
+        this.showConsoleMessage(data.success, data.message);
+
     }
     
 }

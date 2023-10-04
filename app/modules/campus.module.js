@@ -36,7 +36,6 @@ $("body").ready(function () {
         });
     }
 
-
     // load generales
     async function loadDataCampusGeneral() {
         // getTiposTrabajo

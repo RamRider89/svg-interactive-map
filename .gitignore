@@ -3,7 +3,13 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+#vendor not use
+app/vendor/chart.js/
+app/vendor/datatables/
+app/vendor/papaparse/
+
 # User-specific files
+*back.js
 *.back
 *.rsuser
 *.suo
@@ -12,8 +18,23 @@
 *.sln.docstates
 back/
 js/back/
-mapas/back/
-mapas/sanitized/
+app/helpers/js/back/
+app/helpers/js/bot/
+app/helpers/js/scripts/
+
+#mapas
+assets/maps/back/
+assets/maps/sanitized/
+assets/maps/areas/
+
+#backend
+backend/campusdigitalrac/
+backend/generate/
+backend/sql/tablas/inserts/
+backend/sql/contacts.json
+backend/sql/query.sql
+backend/campusdigitalrac-v2/logs
+backend/campusdigitalrac-v2/vendor
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
