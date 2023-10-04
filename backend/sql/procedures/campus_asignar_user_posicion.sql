@@ -14,7 +14,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- ================================================================================================================================================
-ALTER PROCEDURE [dbo].[campus_asignar_user_posicion] (@idEmpleado INT, @nombre VARCHAR(250), @apellidoPaterno VARCHAR(250), @apellidoMaterno VARCHAR(250), @puesto INT, @centro INT, @correo VARCHAR(250), @telefono INT, @lider INT, @gerente INT, @empresa INT, @tipoTrabajo INT, @cumpleanos VARCHAR(250), @fotoUrl VARCHAR(250))
+ALTER PROCEDURE [dbo].[campus_asignar_user_posicion] (@idEmpleado INT, @nombre VARCHAR(250), @apellidoPaterno VARCHAR(250), @apellidoMaterno VARCHAR(250), @puesto INT, @centro INT, @correo VARCHAR(250), @telefono CHAR(15), @lider INT, @gerente INT, @empresa INT, @tipoTrabajo INT, @cumpleanos VARCHAR(250), @fotoUrl VARCHAR(250))
 AS
 BEGIN
 SET NOCOUNT ON;

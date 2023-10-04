@@ -14,23 +14,23 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- ================================================================================================================================================
-ALTER PROCEDURE [dbo].[campus_asignar_posicion] (@idPosition INT, @idEmpleado INT)
+ALTER PROCEDURE [dbo].[campus_asignar_posicion] (@TIPO_MOV INT, @idPosition INT, @idEmpleado INT)
 AS
 BEGIN
 SET NOCOUNT ON;
 -- ================================================================================================================================================
-	DECLARE @TRUE BIT = 1;
+-- TIPO_MOV => 1:ALTA || 0:BAJA
+-- ================================================================================================================================================	
+    DECLARE @TRUE BIT = 1;
 	DECLARE @FALSE BIT = 0;
-
     DECLARE @datePassRegistro AS DATETIME = GETDATE(); -- fecha de registro
-	DECLARE @caducado AS BIT = 0;
-
-    IF (@idPosition > 0 AND @idEmpleado > 0)
+    SET @TIPO_MOV = CAST(@TIPO_MOV AS BIT); -- true || false
+    SET @idEmpleado = CAST(@idEmpleado * @TIPO_MOV AS INT);
+    
+    IF (@idPosition > 0)
         BEGIN
-
             UPDATE CampusPositions SET asignado = @FALSE WHERE idEmpleado = @idEmpleado;    -- reset all positions
-            UPDATE CampusPositions SET asignado = @TRUE, idEmpleado = @idEmpleado, fechaAsignado = @datePassRegistro WHERE id = @idPosition;
-
+            UPDATE CampusPositions SET asignado = @TIPO_MOV, idEmpleado = @idEmpleado, fechaAsignado = @datePassRegistro WHERE id = @idPosition;
             SELECT @TRUE AS ASIGNADO;
         END
     ELSE
