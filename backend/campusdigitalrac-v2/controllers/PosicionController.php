@@ -76,8 +76,8 @@ class PosicionController extends RESTController
         try{
             $parametros = $this->request->getJsonRawBody();
             $parametros->asignada = ($parametros->asignada == '') ? 0 : $parametros->asignada;
-            $parametros->asignada = ($parametros->asignada > 2) ? 2 : $parametros->asignada;
-            $mensaje = ['Consulta de posiciones disponibles', 'Consulta de posiciones asignadas', 'Consulta de todas las posiciones'];
+            $parametros->asignada = ($parametros->asignada > 3) ? 3 : $parametros->asignada;
+            $mensaje = ['Consulta de posiciones disponibles', 'Consulta de posiciones asignadas', 'Consulta de posiciones asignadas en relacion al usuario', 'Consulta de todas las posiciones'];
 
             if (!isset($parametros)) {
                 throw new HTTPException("Estructura de datos no válida.", 404);
@@ -132,9 +132,10 @@ class PosicionController extends RESTController
 
                     $args = (object) [        
                     'asunto' => 'Código de Confirmación - Campus Digital',
-                    'codigo' => $parametros->codigo,
-                    'cuerpo' => 'Ingresa el código: '. $parametros->codigo .' para confirmar tu lugar de trabajo',
+                    'encabezado' => 'Código de Confirmación',
                     'correo' => $parametros->emailEmpleado,
+                    'mensaje' => $parametros->codigo,
+                    'mensajeAdicional' => 'Introduzca el código en la pantalla de CampusDigital para verificar su cuenta'
                     ];
 
                     $correo = $this->email->enviarCorreo($args);
@@ -147,17 +148,48 @@ class PosicionController extends RESTController
         return $this->respond(['response'=> ['consulta'=> $response, 'codigo'=> $parametros->codigo, 'correo' => $correo ]]);
     }
 
+
+    // POST | CONFIRMACION EMAIL
+    public function setEmailConfirmacion(){
+        
+
+        try{
+            $parametros = $this->request->getJsonRawBody();
+            $parametros->asunto = ($parametros->asunto == '') ? NULL : $parametros->asunto;
+            $parametros->emailEmpleado = ($parametros->emailEmpleado == '') ? NULL : $parametros->emailEmpleado;
+            $parametros->mensaje = ($parametros->mensaje == '') ? NULL : $parametros->mensaje;
+
+            // SEND EMAIL
+            $correo = null;
+            $args = (object) [        
+            'asunto' => $parametros->asunto,
+            'encabezado' => $parametros->asunto,
+            'correo' => $parametros->emailEmpleado,
+            'mensaje' => $parametros->mensaje,
+            'mensajeAdicional' => $parametros->mensajeAdicional
+            ];
+
+            $correo = $this->email->enviarCorreo($args);
+
+        } catch (\Exception $ex) {
+            $this->exception->newException($ex);
+        }
+        return $this->respond(['response'=> ['correo' => $correo ]]);
+    }
+
+
     // POST | GUARDAR POSICION
     // POST | api/setposition/
     public function setPosicion(){
         try{
             $parametros = $this->request->getJsonRawBody();
             // setPosition
+            $parametros->TIPO_MOV = ($parametros->TIPO_MOV == '') ? 0 : $parametros->TIPO_MOV;
             $parametros->idPosition = ($parametros->idPosition == '') ? 0 : $parametros->idPosition;
             $parametros->idEmpleado = ($parametros->idEmpleado == '') ? 0 : $parametros->idEmpleado;
 
             // GUANDANDO POSICION
-            $response = $this->model->setPosition($parametros->idPosition, $parametros->idEmpleado);
+            $response = $this->model->setPosition($parametros);
             
         } catch (\Exception $ex) {
             $this->exception->newException($ex);

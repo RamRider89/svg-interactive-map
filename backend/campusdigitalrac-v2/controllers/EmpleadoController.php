@@ -71,6 +71,24 @@ class EmpleadoController extends RESTController
         return $this->respond(['response'=> $response]);
     }
 
+    // FILTRAR EMPLEADO
+    // POST | busqueda de empleado por id coppel
+    public function getEmpleadoCampus(){
+        try{
+            $parametros = $this->request->getJsonRawBody();
+            $parametros->idEmpleado = ($parametros->idEmpleado == '') ? 0 : $parametros->idEmpleado;
+
+            if (!isset($parametros)) {
+                throw new HTTPException("Estructura de datos no válida.", 404);
+            }
+            $response = $this->model->getEmpleadoCampus($parametros->idEmpleado);
+            
+        } catch (\Exception $ex) {
+            $this->exception->newException($ex);
+        }
+        return $this->respond(['response'=> $response]);
+    }
+
     // GET | busqueda de TiposTrabajo
     public function getTipoTrabajo($idTipo){
         try{
@@ -130,32 +148,6 @@ class EmpleadoController extends RESTController
             } else {
                 $response->enviado = false;
                 $response->mensaje = 'No se envio el correo, el e-mail no esta definido.';
-            }
-        } catch (\Exception $ex) {
-            $this->exception->newException($ex);
-        }
-        return $response;
-    }
-
-
-    public function actualizarProveedor() {
-        $parametros = $this->request->getJsonRawBody();
-        if (!isset($parametros)) {
-            throw new HTTPException("Estructura de datos no válida.", 404);
-        }
-        try {
-            $response = $this->model->actualizarProveedor($parametros);
-            $respuesta = new \stdClass();
-            if ($response[0]['resultado'] > 0) {
-                //Se envia correo
-                $datosCorreo = $this->model->correoRegistro($parametros);
-                $respuesta->enviado = $this->utilerias->envioCorreo(
-                    $datosCorreo[0]['des_asunto'],
-                    $datosCorreo[0]['des_cuerpo'],
-                    $parametros->de_eMail
-                );
-            } else {
-                $respuesta->enviado = false;
             }
         } catch (\Exception $ex) {
             $this->exception->newException($ex);

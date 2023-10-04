@@ -31,13 +31,15 @@ class EmailController extends RESTController
     public function enviarCorreo($parametros) {
         try {
             $parametros->asunto = ($parametros->asunto == '') ? 'Confirmación' : $parametros->asunto;
-            $parametros->cuerpo = ($parametros->cuerpo == '') ? 'Confirmación de lugar de trabajo' : $parametros->cuerpo;
+            $parametros->encabezado = ($parametros->encabezado == '') ? 'Código de Confirmación' : $parametros->encabezado;
             $parametros->correo = ($parametros->correo == '') ? '' : $parametros->correo;
-            $parametros->codigo = ($parametros->codigo == '') ? '' : $parametros->codigo;
+            $parametros->mensaje = ($parametros->mensaje == '') ? '' : $parametros->mensaje;
+            $parametros->mensajeAdicional = ($parametros->mensajeAdicional == '') ? '' : $parametros->mensajeAdicional;
             
             $message = $this->email_template;
-            $message = str_replace('%EncabezadoContenido%', 'Código de confirmación', $message);
-            $message = str_replace('%CodigoEnviado%', $parametros->codigo, $message);
+            $message = str_replace('%EncabezadoContenido%', $parametros->encabezado, $message);
+            $message = str_replace('%Mensaje%', $parametros->mensaje, $message);
+            $message = str_replace('%MensajeAdicional%', $parametros->mensajeAdicional, $message);
 
             $des_asunto = $parametros->asunto;
             $des_cuerpo = $message; // codigo

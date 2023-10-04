@@ -39,6 +39,15 @@ class EmpleadoModel extends Modelo
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getEmpleadoCampus($idEmpleado)
+    {
+        $db = DI::getDefault()->get('ConstruNet_des');
+        $statement = $db->prepare('EXEC campus_get_user_position :user');
+        $statement->bindParam(':user', $idEmpleado, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getTipoTrabajo($idTipo)
     {
         $db = DI::getDefault()->get('ConstruNet_des');

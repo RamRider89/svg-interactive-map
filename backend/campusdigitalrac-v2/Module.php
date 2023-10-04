@@ -52,6 +52,7 @@ class Module implements IModule
         $posicion->post('/getposicionbyname', 'getPosicionByName');
         $posicion->post('/getposiciones', 'getPosiciones');
         $posicion->post('/codigoconfirmacion', 'setCodigoConfirmacion');
+        $posicion->post('/emailconfirmacion', 'setEmailConfirmacion');
         $posicion->post('/setposition', 'setPosicion');
 
 
@@ -82,6 +83,7 @@ class Module implements IModule
         $empleado->get('/enviarcorreo', 'enviarCorreo');
         $empleado->get('/gettipotrabajo/{idTipo}', 'getTipoTrabajo');
         $empleado->post('/getlidercentro', 'getLiderCentro');
+        $empleado->post('/getempleadocampus', 'getEmpleadoCampus');
 
         // CATALOGO USER POSITION
         $userPosition = new Collection();

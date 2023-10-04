@@ -88,16 +88,16 @@ class UserPosicionModel extends Modelo
         $statement->bindParam(':nombre', $parametros->nombre, PDO::PARAM_STR);
         $statement->bindParam(':apellidop', $parametros->apellidoPaterno, PDO::PARAM_STR);
         $statement->bindParam(':apellidom', $parametros->apellidoMaterno, PDO::PARAM_STR);
-        $statement->bindParam(':puesto', $parametros->puesto, PDO::PARAM_INT);
-        $statement->bindParam(':centro', $parametros->centro, PDO::PARAM_INT);
-        $statement->bindParam(':correo', $parametros->correo, PDO::PARAM_STR);
-        $statement->bindParam(':telefono', $parametros->telefono, PDO::PARAM_INT);
-        $statement->bindParam(':lider', $parametros->lider, PDO::PARAM_INT);
-        $statement->bindParam(':gerente', $parametros->gerente, PDO::PARAM_INT);
-        $statement->bindParam(':empresa', $parametros->empresa, PDO::PARAM_INT);
+        $statement->bindParam(':puesto', $parametros->numeroPuesto, PDO::PARAM_INT);
+        $statement->bindParam(':centro', $parametros->numeroCentro, PDO::PARAM_INT);
+        $statement->bindParam(':correo', $parametros->empleadoEmaiL, PDO::PARAM_STR);
+        $statement->bindParam(':telefono', $parametros->numeroTelefono, PDO::PARAM_INT);
+        $statement->bindParam(':lider', $parametros->numeroLider, PDO::PARAM_INT);
+        $statement->bindParam(':gerente', $parametros->numeroGerente, PDO::PARAM_INT);
+        $statement->bindParam(':empresa', $parametros->numeroEmpresa, PDO::PARAM_INT);
         $statement->bindParam(':tipotr', $parametros->tipoTrabajo, PDO::PARAM_INT);
-        $statement->bindParam(':cumpleanos', $parametros->cumpleanos, PDO::PARAM_STR);
-        $statement->bindParam(':foto', $parametros->fotoUrl, PDO::PARAM_STR);
+        $statement->bindParam(':cumpleanos', $parametros->fechaNacimiento, PDO::PARAM_STR);
+        $statement->bindParam(':foto', $parametros->fotoURL, PDO::PARAM_STR);
         
         $statement->execute();
         return $statement->fetchAll();

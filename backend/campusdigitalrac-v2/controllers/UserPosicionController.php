@@ -117,16 +117,16 @@ class UserPosicionController extends RESTController
             $parametros->nombre = ($parametros->nombre == '') ? '' : $parametros->nombre;
             $parametros->apellidoPaterno = ($parametros->apellidoPaterno == '') ? '' : $parametros->apellidoPaterno;
             $parametros->apellidoMaterno = ($parametros->apellidoMaterno == '') ? '' : $parametros->apellidoMaterno;
-            $parametros->puesto = ($parametros->puesto == '') ? 0 : $parametros->puesto;
-            $parametros->centro = ($parametros->centro == '') ? 0 : $parametros->centro;
-            $parametros->correo = ($parametros->correo == '') ? '' : $parametros->correo;
-            $parametros->telefono = ($parametros->telefono == '') ? 0 : $parametros->telefono;
-            $parametros->lider = ($parametros->lider == '') ? 0 : $parametros->lider;
-            $parametros->gerente = ($parametros->gerente == '') ? 0 : $parametros->gerente;
-            $parametros->empresa = ($parametros->empresa == '') ? 0 : $parametros->empresa;
+            $parametros->numeroPuesto = ($parametros->numeroPuesto == '') ? 0 : $parametros->numeroPuesto;
+            $parametros->numeroCentro = ($parametros->numeroCentro == '') ? 0 : $parametros->numeroCentro;
+            $parametros->empleadoEmaiL = ($parametros->empleadoEmaiL == '') ? '' : $parametros->empleadoEmaiL;
+            $parametros->numeroTelefono = ($parametros->numeroTelefono == '') ? 0 : $parametros->numeroTelefono;
+            $parametros->numeroLider = ($parametros->numeroLider == '') ? 0 : $parametros->numeroLider;
+            $parametros->numeroGerente = ($parametros->numeroGerente == '') ? 0 : $parametros->numeroGerente;
+            $parametros->numeroEmpresa = ($parametros->numeroEmpresa == '') ? 0 : $parametros->numeroEmpresa;
             $parametros->tipoTrabajo = ($parametros->tipoTrabajo == '') ? 0 : $parametros->tipoTrabajo;
-            $parametros->cumpleanos = ($parametros->cumpleanos == '') ? NULL : $parametros->cumpleanos;
-            $parametros->fotoUrl = ($parametros->fotoUrl == '') ? NULL : $parametros->fotoUrl;
+            $parametros->fechaNacimiento = ($parametros->fechaNacimiento == '') ? NULL : $parametros->fechaNacimiento;
+            $parametros->fotoURL = ($parametros->fotoURL == '') ? NULL : $parametros->fotoURL;
 
             // GUANDANDO USER POSICION
             $response = $this->model->setUserPosition($parametros);

@@ -77,15 +77,16 @@ class PosicionModel extends Modelo
 
     // POST ASGINAR POSICION (setPosition)
 	// POST | api/setposition/
-    public function setPosition($idPosition, $idEmpleado){
+    public function setPosition($parametros){
          /**
         *    [idPosition] [int],
         *    [idEmpleado] [int],
          */
         $db = DI::getDefault()->get('ConstruNet_des');
-        $statement = $db->prepare('EXEC campus_asignar_posicion :posicion, :empleado');
-        $statement->bindParam(':posicion', $idPosition, PDO::PARAM_INT);
-        $statement->bindParam(':empleado', $idEmpleado, PDO::PARAM_INT);
+        $statement = $db->prepare('EXEC campus_asignar_posicion :mov, :posicion, :empleado');
+        $statement->bindParam(':mov', $parametros->TIPO_MOV, PDO::PARAM_INT);
+        $statement->bindParam(':posicion', $parametros->idPosition, PDO::PARAM_INT);
+        $statement->bindParam(':empleado', $parametros->idEmpleado, PDO::PARAM_INT);
         $statement->execute();
         return $statement->fetchAll();
 
